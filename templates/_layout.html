@@ -5,12 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Default Title{% endblock title %}</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style/main.css">
+    {% block style %} {% endblock style %}
 </head>
 
 <body>
     <nav>
-        <h2>website name</h2>
+
+        <h2><a href="/" style="text-decoration: none; color: whitesmoke;">OneBit</a></h2>
+
+        <div>
+            <a href="/page">page</a>
+            <a href="/another">another</a>
+        </div>
     </nav>
     <div style="margin-top: 100px;">
         {% block content %}

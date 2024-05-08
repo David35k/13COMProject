@@ -1,0 +1,8 @@
+header>#headTextDiv {
+    max-width: 50%;
+    margin-left: 100px;
+}
+
+header>#headTextDiv>h1 {
+    font-size: 75px;
+}

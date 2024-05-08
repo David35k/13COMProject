@@ -1,0 +1,41 @@
+body {
+    margin: 40px auto;
+    line-height: 1.6;
+    font-size: 18px;
+    padding: 0;
+    color: #444;
+    background-color: #eee;
+}
+
+.centerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.normalContent {
+    max-width: 750px;
+}
+
+nav {
+    display: flex;
+    margin: 10px auto;
+    margin-top: 0;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    height: 75px;
+    background-color: #999;
+    width: 100%;
+}
+
+nav>div>a {
+    margin: 10px;
+    color: whitesmoke;
+}
+
+nav>h2 {
+    color: whitesmoke;
+    margin: 20px;
+}
