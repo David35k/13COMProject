@@ -1,8 +1,19 @@
-header>#headTextDiv {
+header {
+    height: 100vh;
+    display: flex;
+}
+
+#headTextDiv {
     max-width: 50%;
     margin-left: 100px;
 }
 
-header>#headTextDiv>h1 {
-    font-size: 75px;
+#headTextDiv>h1 {
+    font-size: 60px;
+}
+
+/* BLOBS */
+
+#blob1 {
+    width: 50%;
 }
