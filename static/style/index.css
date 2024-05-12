@@ -6,6 +6,7 @@ header {
 }
 
 #headTextDiv {
+    margin-top: 100px;
     text-align: center;
     padding: 50px;
     padding-top: 0;
