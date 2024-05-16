@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, flash
+from flask import Flask, render_template, request, session, flash, redirect
 import pymysql
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ def create_connection():
         host="localhost",
         user="david",
         password="DavidGamerDD335",
-        db="OneBit",
+        database="OneBit",
         cursorclass=pymysql.cursors.DictCursor
     )
 
@@ -24,14 +24,20 @@ def signup():
     if request.method == "POST":
         with create_connection() as connection:
             with connection.cursor() as cursor:
-            
                 sql = """INSERT INTO users (firstName, userName, email, password)
-                        VALUES ("%s", "%s", "%s", "%s");
+                        VALUES (%s, %s, %s, %s);
                 """
                 values = (request.form["firstName"], request.form["userName"], request.form["email"], request.form["password"],)
                 cursor.execute(sql, values)
+                return redirect("/")
     
-    return render_template("signup.html")
+    with create_connection() as connection:
+            with connection.cursor() as cursor:
+
+                cursor.execute("SELECT * FROM users WHERE userID = 1")
+                name = cursor.fetchone()
+                print(name["userName"])
+                return render_template("signup.html", name=name)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
