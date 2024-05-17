@@ -1,0 +1,10 @@
+#main-div {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#post-feed {
+    max-width: 500px;
+    background-color: red;
+}
