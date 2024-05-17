@@ -24,16 +24,18 @@
             {% if session["loggedIn"] %}
             <a href="/home" class="roboto-bold">HOME</a>
             <div class="dropdown">
-                <a class="roboto-bold">ACCOUNT</a>
+                <a class="roboto-bold">OPTIONS</a>
                 <div class="dropdown-content">
-                    <a class="dropdown-link" href="#">Link 1</a>
-                    <a class="dropdown-link" href="#">Link 2</a>
-                    <a class="dropdown-link" href="#">Link 3</a>
+                    <a class="dropdown-link" href="/profile">Profile</a>
+                    <a class="dropdown-link" href="/createPost">Create Post</a>
+                    <hr>
+                    <a class="dropdown-link" href="/settings">Settings</a>
+                    <a class="dropdown-link" href="/logout">Log Out</a>
                 </div>
             </div>
             {% else %}
             <a href="/login" class="roboto-bold">LOG IN</a>
-            <a href="/signup" class="roboto-bold">SIGN UP</a>
+            <a href="/signup" class="roboto-bold pill">SIGN UP</a>
             {% endif %}
 
         </nav>

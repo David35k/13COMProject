@@ -14,7 +14,6 @@ def create_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -60,5 +59,15 @@ def login():
             flash("no user with username " + request.form["userName"])
     
     return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("logged out")
+    return redirect("/login")
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
 
 app.run(debug=True)
