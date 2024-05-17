@@ -19,6 +19,11 @@
     <div class="normalContent">
         <section>
             <h2>What's OneBit?</h2>
+            {% if session["loggedIn"] %}
+            <p>you are logged in!!</p>
+            {% else %}
+            <p>you are not logged in bruh!!</p>
+            {% endif %}
             <p>wassupwassup blah blah blah blahwassup blah blah blah blahwassup blah blah blah blahwassup blah blah blah
                 blahwassup blah blah blah blah blah blah blah blah wassupwassup blah blah blah blahwassup blah blah blah
                 blahwassup blah blah blah blahwassup blah blah blah

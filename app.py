@@ -29,19 +29,36 @@ def signup():
                 """
                 values = (request.form["firstName"], request.form["userName"], request.form["email"], request.form["password"],)
                 cursor.execute(sql, values)
-                return redirect("/")
+                connection.commit()
     
-    with create_connection() as connection:
-            with connection.cursor() as cursor:
 
-                cursor.execute("SELECT * FROM users WHERE userID = 1")
-                name = cursor.fetchone()
-                print(name["userName"])
-                return render_template("signup.html", name=name)
+    return render_template("signup.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "GET":
-        return render_template("login.html")
+    session["epic"] = "cool"
+    if request.method == "POST":
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = """SELECT * FROM users
+                WHERE userName=%s
+                """
+                values = (request.form["userName"])
+                cursor.execute(sql, values)
+                result = cursor.fetchone()
+            
+        if result:
+            if result["password"] == request.form["password"]:
+                session["loggedIn"] = True
+                session["firstName"] = result["firstName"]
+                session["userName"] = result["userName"]
+                flash("login successful!")
+                return redirect("/")
+            else:
+                flash("wrong password for username " + result["userName"])
+        else:
+            flash("no user with username " + request.form["userName"])
+    
+    return render_template("login.html")
 
 app.run(debug=True)

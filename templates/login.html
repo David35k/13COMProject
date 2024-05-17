@@ -1,0 +1,31 @@
+{% extends "_layout.html" %}
+
+{% block title %}Log In{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/style/font.css">
+{% endblock style %}
+
+{% block content %}
+<form method="POST">
+    <div>
+        <label for="userName">Username</label>
+        <input id="userName" name="userName">
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password">
+    </div>
+    <button>LOG IN</button>
+</form>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+{% endblock content %}
