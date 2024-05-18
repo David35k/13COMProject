@@ -68,6 +68,11 @@ def logout():
 
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    with create_connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM posts")
+                result = cursor.fetchall()
+                
+    return render_template("home.html", posts=result)
 
-app.run(debug=True)
+app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server

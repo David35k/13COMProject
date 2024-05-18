@@ -8,14 +8,23 @@
 
 {% block content %}
 <div id="main-div">
-    <div>
+    <div id="left" class="side-div">
         <p>left</p>
+        <p>blah blah blah bruh bruh bruhblah blah blah bruh bruh bruhblah blah blah bruh bruh bruhblah blah blah bruh
+            bruh bruh</p>
     </div>
     <div id="post-feed">
         <p>post feed</p>
+        <div>
+            {% for post in posts %}
+            <p>{{ post["category"] }}</p>
+            <img src="/home/david/Downloads/bro.jpg">
+            {% endfor %}
+        </div>
     </div>
-    <div>
+    <div id="right" class="side-div">
         <p>Latest Posts</p>
+        <p>blah blah blah bruh bruh bruhblah blah blah bruh bruh bruh</p>
     </div>
 </div>
 {% endblock content%}

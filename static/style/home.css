@@ -2,9 +2,14 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    justify-content: space-evenly;
 }
 
 #post-feed {
     max-width: 500px;
     background-color: red;
+}
+
+.side-div {
+    max-width: 400px;
 }
