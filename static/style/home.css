@@ -6,8 +6,17 @@
 }
 
 #post-feed {
-    max-width: 500px;
     background-color: red;
+    padding: 30px;
+}
+
+.post {
+    max-width: 550px;
+}
+
+.post>img {
+    max-width: 500px;
+    margin: 25px;
 }
 
 .side-div {

@@ -1,9 +1,13 @@
 from flask import Flask, render_template, request, session, flash, redirect
 import pymysql
+import hashlib
 
 app = Flask(__name__)
 
 app.secret_key = "epicSecretKeyNeverCanCrackThisEpicCode//123#@%"
+
+def encrypt(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
 def create_connection():
     return pymysql.connect(
@@ -26,7 +30,7 @@ def signup():
                 sql = """INSERT INTO users (firstName, userName, email, password)
                         VALUES (%s, %s, %s, %s);
                 """
-                values = (request.form["firstName"], request.form["userName"], request.form["email"], request.form["password"],)
+                values = (request.form["firstName"], request.form["userName"], request.form["email"], encrypt(request.form["password"]),)
                 cursor.execute(sql, values)
                 connection.commit()
     
@@ -47,12 +51,12 @@ def login():
                 result = cursor.fetchone()
             
         if result:
-            if result["password"] == request.form["password"]:
+            if result["password"] == encrypt(request.form["password"]):
                 session["loggedIn"] = True
                 session["firstName"] = result["firstName"]
                 session["userName"] = result["userName"]
                 flash("login successful!")
-                return redirect("/")
+                return redirect("/home")
             else:
                 flash("wrong password for username " + result["userName"])
         else:

@@ -125,6 +125,7 @@ nav a.pill {
     color: #2758B6;
     transition-duration: 150ms;
     filter: drop-shadow(0px 0px 25px rgb(92, 92, 92));
+    text-decoration: none;
 }
 
 .action-button:clicked {

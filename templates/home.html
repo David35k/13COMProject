@@ -17,9 +17,9 @@
         <p>post feed</p>
         <div>
             {% for post in posts %}
-            <div style="background-color: blue;">
+            <div style="background-color: blue;" class="post">
                 <p>{{ post["category"] }}</p>
-                <img src='{{ post["image"] }}' width="50px">
+                <img src='{{ post["image"] }}'>
             </div>
             {% endfor %}
         </div>
