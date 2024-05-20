@@ -12,8 +12,8 @@ def encrypt(password):
 def create_connection():
     return pymysql.connect(
         host="localhost",
-        user="david",
-        password="DavidGamerDD335",
+        user="onebit",
+        password="epicPassword",
         database="OneBit",
         cursorclass=pymysql.cursors.DictCursor
     )
