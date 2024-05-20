@@ -22,3 +22,9 @@
 .side-div {
     max-width: 400px;
 }
+
+.socials-bar {
+    width: inherit;
+    display: flex;
+    justify-content: space-around;
+}

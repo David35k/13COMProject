@@ -7,6 +7,24 @@
 {% endblock style %}
 
 {% block content %}
+<script>
+    $(document).ready(function () {
+        $('.like-button').on('click', function (event) {
+            console.log("likey likey");
+            id = this.id;
+            $.ajax({
+                url: '/like?postID=' + id,
+                type: 'GET',
+                success: function (response) {
+
+                    document.getElementsByClassName(id)[0].innerHTML = response;
+                    console.log(response);
+                }
+            });
+        });
+    });
+</script>
+
 <div id="main-div">
     <div id="left" class="side-div">
         <p>left</p>
@@ -18,8 +36,21 @@
         <div>
             {% for post in posts %}
             <div style="background-color: blue;" class="post">
-                <p>{{ post["category"] }}</p>
+                <p>Title: <span class="roboto-bold">{{ post["title"] }}</span></p>
+                <p>tags:
+                    {% for tag in tags %}
+                    {% if tag["postID"] == post["postID"]%}
+                    "{{ tag["tag"] }}"
+                    {% endif %}
+                    {% endfor %}
+                </p>
+                <p>likes: <span class='{{ post["postID"] }}'>{{ post["likes"] }}</span></p>
                 <img src='{{ post["image"] }}'>
+                <div class="socials-bar">
+                    <button class="like-button" id='{{post["postID"]}}'>like</button>
+                    <a>comment</a>
+                    <a>share</a>
+                </div>
             </div>
             {% endfor %}
         </div>

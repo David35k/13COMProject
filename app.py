@@ -18,10 +18,12 @@ def create_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
+# main landing page when first visiting the website
 @app.route("/")
 def index():
     return render_template("index.html")
 
+# lets a user create an account
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -37,6 +39,7 @@ def signup():
 
     return render_template("signup.html")
 
+# logs an already existing user in
 @app.route("/login", methods=["GET", "POST"])
 def login():
     session["epic"] = "cool"
@@ -64,19 +67,44 @@ def login():
     
     return render_template("login.html")
 
+# logs the user out by clearing the session variables that contain info about them
 @app.route("/logout")
 def logout():
     session.clear()
     flash("logged out")
     return redirect("/login")
 
+# main page users will spend the most time on, shows post feed and allat
 @app.route("/home")
 def home():
     with create_connection() as connection:
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM posts")
                 result = cursor.fetchall()
+
+                cursor.execute("SELECT * FROM tags")
+                tags = cursor.fetchall()
                 
-    return render_template("home.html", posts=result)
+    return render_template("home.html", posts=result, tags=tags)
+
+# for liking posts
+@app.route("/like")
+def like():
+    with create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = "UPDATE posts SET likes = likes + 1 WHERE postID = %s"
+                value = request.args.get("postID")
+                cursor.execute(sql, value)
+                connection.commit()
+
+                cursor.execute("SELECT likes FROM posts WHERE postID = %s", value)
+                result = cursor.fetchone()
+
+                print(result["likes"])
+
+                return str(result["likes"])
+
+    
+    
 
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server
