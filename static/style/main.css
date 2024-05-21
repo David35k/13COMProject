@@ -25,7 +25,7 @@ body {
 }
 
 .background-gradient-inverted {
-    background: linear-gradient(120deg, #15B4E7, #2758B6, #343434);
+    background: linear-gradient(120deg, #15B4E7, #2758B6);
 }
 
 .centerContent {
@@ -100,7 +100,7 @@ nav {
 nav a {
     width: max-content;
     padding: 8px 24px;
-    color: #15B4E7;
+    color: white;
     text-decoration: none;
     border-radius: 4px;
     transition-duration: 300ms;

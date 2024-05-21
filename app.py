@@ -100,8 +100,6 @@ def like():
                 cursor.execute("SELECT likes FROM posts WHERE postID = %s", value)
                 result = cursor.fetchone()
 
-                print(result["likes"])
-
                 return str(result["likes"])
 
     
