@@ -58,6 +58,7 @@ def login():
                 session["loggedIn"] = True
                 session["firstName"] = result["firstName"]
                 session["userName"] = result["userName"]
+                session["userID"] = result["userID"]
                 flash("login successful!")
                 return redirect("/home")
             else:
@@ -92,17 +93,41 @@ def home():
 def like():
     with create_connection() as connection:
             with connection.cursor() as cursor:
-                sql = "UPDATE posts SET likes = likes + 1 WHERE postID = %s"
-                value = request.args.get("postID")
-                cursor.execute(sql, value)
+                postID = request.args.get("postID")
+                alreadyLiked = False;
+
+                # check if the user already liked the post
+                sql = "SELECT userID FROM likes WHERE postID = %s"
+                cursor.execute(sql, postID)
+                results = cursor.fetchall()
+
+                for result in results:
+                    if result["userID"] == session["userID"]:
+                        # there is a match so it should "unlike"
+                        alreadyLiked = True;
+                        
+
+                if alreadyLiked:
+                    sql = "DELETE FROM likes where userID = %s AND postID = %s"
+                    values = (session["userID"], postID)
+                    cursor.execute(sql, values)
+
+                    sql = "UPDATE posts SET likes = likes - 1 WHERE postID = %s"
+                else:
+                    # add a new like
+                    sql = "INSERT INTO likes (userID, postID) VALUES (%s, %s)"
+                    values = (session["userID"], postID)
+                    cursor.execute(sql, values)
+
+                    sql = "UPDATE posts SET likes = likes + 1 WHERE postID = %s"
+
+                cursor.execute(sql, postID)
                 connection.commit()
 
-                cursor.execute("SELECT likes FROM posts WHERE postID = %s", value)
+                cursor.execute("SELECT likes FROM posts WHERE postID = %s", postID)
                 result = cursor.fetchone()
 
                 return str(result["likes"])
-
-    
     
 
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server
