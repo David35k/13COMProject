@@ -10,7 +10,6 @@
 <script>
     $(document).ready(function () {
         $('.like-button').on('click', function (event) {
-            console.log("likey likey");
             id = this.id;
             $.ajax({
                 url: '/like?postID=' + id,
@@ -18,7 +17,6 @@
                 success: function (response) {
 
                     document.getElementsByClassName(id)[0].innerHTML = response;
-                    console.log(response);
                 }
             });
         });
@@ -32,12 +30,10 @@
             bruh bruh</p>
     </div>
     <div id="center">
-        <div id="search-div">
-            <form>
-                <input type="search" placeholder="Search OneBit:">
-            </form>
-        </div>
-        <div id="post-feed">
+        <form id="search-form">
+            <input type="search" placeholder="Search OneBit:">
+        </form>
+        <div id="post-feed" class="border-gradient">
             <p>post feed</p>
             <div>
                 {% for post in posts %}
@@ -51,7 +47,9 @@
                         {% endfor %}
                     </p>
                     <p>likes: <span class='{{ post["postID"] }}'>{{ post["likes"] }}</span></p>
-                    <img src='{{ post["image"] }}'>
+                    <div class="post-img-div">
+                        <img src='{{ post["image"] }}' class="post-img">
+                    </div>
                     <div class="socials-bar">
                         <button class="like-button" id='{{post["postID"]}}'>like</button>
                         <a>comment</a>

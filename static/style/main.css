@@ -28,6 +28,36 @@ body {
     background: linear-gradient(120deg, #15B4E7, #2758B6);
 }
 
+/* this border shinenigans is chatgpt LMAO */
+
+.border-gradient {
+    position: relative;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 15px;
+    /* Adjust the border radius */
+    background: white;
+    /* Inner background color */
+}
+
+.border-gradient::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    /* Adjust based on border width */
+    left: -3px;
+    /* Adjust based on border width */
+    right: -3px;
+    /* Adjust based on border width */
+    bottom: -3px;
+    /* Adjust based on border width */
+    background: linear-gradient(120deg, #15B4E7, #2758B6);
+    /* Adjust the gradient colors */
+    border-radius: inherit;
+    /* Inherit border radius from the parent */
+    z-index: -1;
+}
+
 .centerContent {
     display: flex;
     justify-content: center;

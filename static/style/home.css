@@ -6,17 +6,24 @@
 }
 
 #post-feed {
-    background-color: red;
+    background-color: #434343;
     padding: 30px;
+    border-radius: 15px;
 }
 
 .post {
-    max-width: 550px;
+    max-width: 725px;
 }
 
-.post>img {
-    max-width: 500px;
+.post-img {
+    max-width: 650px;
     margin: 25px;
+}
+
+.post-img-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .side-div {
@@ -27,4 +34,24 @@
     width: inherit;
     display: flex;
     justify-content: space-around;
+}
+
+#search-form {
+    margin: 25px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#search-form>input {
+    width: 100%;
+    height: 35px;
+    font-family: inherit;
+    font-size: 15px;
+    border: none;
+    border-radius: 7px;
+}
+
+#search-form>input:focus {
+    outline: 3px solid #15B4E7;
 }
