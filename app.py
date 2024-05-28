@@ -1,13 +1,11 @@
 from flask import Flask, render_template, request, session, flash, redirect
 import pymysql
 import hashlib
+import uuid
 
 app = Flask(__name__)
 
 app.secret_key = "epicSecretKeyNeverCanCrackThisEpicCode//123#@%"
-
-def encrypt(password):
-    return hashlib.sha256(password.encode()).hexdigest()
 
 def create_connection():
     return pymysql.connect(
@@ -17,6 +15,22 @@ def create_connection():
         database="OneBit",
         cursorclass=pymysql.cursors.DictCursor
     )
+
+# for encrypting your epic passwords
+# cant write a function to go backwards so no one knows what the password is lawl
+def encrypt(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# this is for saving images
+# adds some randomness to avoid double ups
+def saveFile(file, path, default = None):
+    if file:
+        randomness = str(uuid.uuid4())[:8] # only 8 characters
+        filePath = path + randomness + "-" + file.filename
+        file.save(filePath)
+        return "/" + filePath
+    else:
+        return default
 
 # main landing page when first visiting the website
 @app.route("/")
@@ -36,7 +50,6 @@ def signup():
                 cursor.execute(sql, values)
                 connection.commit()
     
-
     return render_template("signup.html")
 
 # logs an already existing user in
@@ -87,6 +100,22 @@ def home():
                 tags = cursor.fetchall()
                 
     return render_template("home.html", posts=result, tags=tags)
+
+# for creating posts
+@app.route("/createPost", methods=["GET", "POST"])
+def createPost():
+     if request.method == "POST":
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO posts (userID, title, image, description) VALUES (%s, %s, %s, %s)"
+                values = (session["userID"], request.form["title"], saveFile(request.files["image"], "static/images/postImages/"), request.form["description"])
+                cursor.execute(sql, values)
+                
+                # TODO: make it so that the user can also submit tags associated with the post
+                
+                connection.commit()
+
+     return render_template("createPost.html")
 
 # for liking posts
 @app.route("/like")
