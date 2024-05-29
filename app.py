@@ -98,8 +98,18 @@ def home():
 
                 cursor.execute("SELECT * FROM tags")
                 tags = cursor.fetchall()
+
+                cursor.execute("SELECT * FROM likes WHERE userID = %s", session["userID"])
+                likes = cursor.fetchall()
+
+                likeArr = []
+
+                for post in result:
+                    for like in likes:
+                        if post["postID"] == like["likeID"]:
+                            post["liked_by_this_guy"] = True
                 
-    return render_template("home.html", posts=result, tags=tags)
+    return render_template("home.html", posts=result, tags=tags, likes=likes)
 
 # for creating posts
 @app.route("/createPost", methods=["GET", "POST"])

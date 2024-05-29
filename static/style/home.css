@@ -76,6 +76,11 @@
     transform-origin: 0 100%;
 }
 
+.heart-hollow::before,
+.heart-hollow::after {
+    background: #696969;
+}
+
 .heart:after {
     left: 0;
     transform: rotate(45deg);

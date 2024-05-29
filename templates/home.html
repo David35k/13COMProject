@@ -15,7 +15,6 @@
                 url: '/like?postID=' + id,
                 type: 'GET',
                 success: function (response) {
-
                     document.getElementsByClassName(id)[0].innerHTML = response;
                 }
             });
@@ -52,7 +51,11 @@
                     </div>
                     <div class="socials-bar">
                         <button class="like-button" id='{{post["postID"]}}'>
+                            {% if post["liked_by_this_guy"] %}
+                            <div class="heart heart-hollow"></div>
+                            {% else %}
                             <div class="heart"></div>
+                            {% endif %}
                         </button>
                         <a>comment</a>
                         <a>share</a>
