@@ -104,12 +104,27 @@ def home():
 
                 likeArr = []
 
+                for n in range(10):
+                    print(n)
+                    likeArr.append(False)
+
+                for post in result:
+                    likeArr.append(False)
+
+                print(likeArr)
+
                 for post in result:
                     for like in likes:
-                        if post["postID"] == like["likeID"]:
-                            post["liked_by_this_guy"] = True
+                        if post["postID"] == like["postID"] and like["userID"] == session["userID"]:
+                            likeArr[post["postID"]] = True
+                            break
+                    
+                    likeArr[post["postID"]] = False
+                    
+                print(likeArr)
+
                 
-    return render_template("home.html", posts=result, tags=tags, likes=likes)
+    return render_template("home.html", posts=result, tags=tags, likes=likes, likeArr=likeArr)
 
 # for creating posts
 @app.route("/createPost", methods=["GET", "POST"])
@@ -145,7 +160,6 @@ def like():
                         # there is a match so it should "unlike"
                         alreadyLiked = True;
                         
-
                 if alreadyLiked:
                     sql = "DELETE FROM likes where userID = %s AND postID = %s"
                     values = (session["userID"], postID)
@@ -168,5 +182,4 @@ def like():
 
                 return str(result["likes"])
     
-
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server

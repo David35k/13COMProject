@@ -37,7 +37,7 @@
             <div>
                 {% for post in posts %}
                 <div style="background-color: blue;" class="post">
-                    <p>Title: <span class="roboto-bold">{{ post["title"] }}</span></p>
+                    <p>Title: <span class="roboto-bold">{{ post["title"] }} {{ post["postID"] }}</span></p>
                     <p>tags:
                         {% for tag in tags %}
                         {% if tag["postID"] == post["postID"]%}
@@ -51,11 +51,20 @@
                     </div>
                     <div class="socials-bar">
                         <button class="like-button" id='{{post["postID"]}}'>
-                            {% if post["liked_by_this_guy"] %}
+                            {# {% if post["liked_by_this_guy"] %}
                             <div class="heart heart-hollow"></div>
                             {% else %}
                             <div class="heart"></div>
+                            {% endif %} #}
+
+
+
+                            {% if likeArr[post["postID"]] == true %}
+                            <div class="heart"></div>
+                            {% else %}
+                            <div class="heart heart-hollow"></div>
                             {% endif %}
+
                         </button>
                         <a>comment</a>
                         <a>share</a>
