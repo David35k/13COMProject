@@ -103,23 +103,22 @@ def home():
                 likes = cursor.fetchall()
 
                 likeArr = []
-
-                for n in range(10):
-                    print(n)
-                    likeArr.append(False)
-
-                for post in result:
-                    likeArr.append(False)
-
-                print(likeArr)
+                count = 0
 
                 for post in result:
                     for like in likes:
-                        if post["postID"] == like["postID"] and like["userID"] == session["userID"]:
-                            likeArr[post["postID"]] = True
-                            break
-                    
-                    likeArr[post["postID"]] = False
+                        if like["userID"] == session["userID"] and post["postID"] == like["postID"]:
+                            # do if the user liked the post:
+                                if post["postID"] - count > 0:
+                                    for n in range(post["postID"] - count):
+                                        likeArr.append(False)
+                                        count += 1
+
+                                likeArr.append(True)
+                                count += 1
+                                break
+                        
+                    # count += 1
                     
                 print(likeArr)
 
