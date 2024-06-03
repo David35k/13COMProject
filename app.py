@@ -134,9 +134,18 @@ def createPost():
                 sql = "INSERT INTO posts (userID, title, image, description) VALUES (%s, %s, %s, %s)"
                 values = (session["userID"], request.form["title"], saveFile(request.files["image"], "static/images/postImages/"), request.form["description"])
                 cursor.execute(sql, values)
-                
-                # TODO: make it so that the user can also submit tags associated with the post
-                
+                connection.commit()
+
+                cursor.execute("SELECT postID FROM posts ORDER BY postID DESC")
+                result = cursor.fetchone()
+
+                tags = [x.strip() for x in request.form["tags"].split(',')]
+
+                for tag in tags:
+                    sql = "INSERT INTO tags (tag, postID) VALUES (%s, %s)"
+                    values = (tag, result["postID"])
+                    cursor.execute(sql, values)
+
                 connection.commit()
 
      return render_template("createPost.html")

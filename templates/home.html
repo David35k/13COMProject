@@ -7,20 +7,7 @@
 {% endblock style %}
 
 {% block content %}
-<script>
-    $(document).ready(function () {
-        $('.like-button').on('click', function (event) {
-            id = this.id;
-            $.ajax({
-                url: '/like?postID=' + id,
-                type: 'GET',
-                success: function (response) {
-                    document.getElementsByClassName(id)[0].innerHTML = response;
-                }
-            });
-        });
-    });
-</script>
+<script src="/static/scripts/home.js"></script>
 
 <div id="main-div">
     <div id="left" class="side-div">

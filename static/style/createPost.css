@@ -1,0 +1,31 @@
+form {
+    margin: 20px;
+}
+
+#tag-container {
+    margin: 10px 0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    min-height: 40px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background-color: blue;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.tag span {
+    margin-right: 10px;
+}
+
+.tag .remove-tag {
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+}

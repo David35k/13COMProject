@@ -3,10 +3,13 @@
 {% block title %}Sign Up{% endblock title %}
 
 {% block style %}
-
+<link rel="stylesheet" href="/static/style/createPost.css">
 {% endblock style %}
 
 {% block content %}
+
+<script src="/static/scripts/createPost.js"></script>
+
 <form method="POST" enctype="multipart/form-data">
     <div>
         <label for=" title">Title</label>
@@ -17,6 +20,12 @@
 
         <label for="description">description</label>
         <input id="description" name="description" type="text">
+
+        <label for="tag-input">Enter tags:</label>
+        <input type="text" id="tag-input" placeholder="Type a tag and press enter">
+        <div id="tag-container"></div>
+        <input type="hidden" id="tag-list" name="tags">
+
     </div>
     <button>yippee</button>
 </form>
