@@ -189,5 +189,10 @@ def like():
                 result = cursor.fetchone()
 
                 return str(result["likes"])
+
+# a page where the user can check and edit their profile 
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
     
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server

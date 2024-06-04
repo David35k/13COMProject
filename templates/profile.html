@@ -1,0 +1,13 @@
+{% extends "_layout.html" %}
+
+{% block title %}Welcome to OneBit{% endblock title %}
+
+{% block style %}
+
+{% endblock style %}
+
+{% block content %}
+<h1>first name:{{ session["firstName"] }}</h1>
+<h1>user name:{{ session["userName"] }}</h1>
+<h1>id:{{ session["userID"] }}</h1>
+{% endblock content %}
