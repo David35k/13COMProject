@@ -7,7 +7,7 @@
 {% endblock style %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     <div>
         <label for="firstName">First Name</label>
         <input id="firstName" name="firstName">
@@ -20,6 +20,9 @@
 
         <label for="password">password</label>
         <input id="password" name="password" type="password">
+
+        <label for="image">profil picture</label>
+        <input id="image" name="image" type="file" accept="image/*">
     </div>
     <button>yippee</button>
 </form>

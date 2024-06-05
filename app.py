@@ -43,10 +43,10 @@ def signup():
     if request.method == "POST":
         with create_connection() as connection:
             with connection.cursor() as cursor:
-                sql = """INSERT INTO users (firstName, userName, email, password)
-                        VALUES (%s, %s, %s, %s);
+                sql = """INSERT INTO users (firstName, userName, email, password, image)
+                        VALUES (%s, %s, %s, %s, %s);
                 """
-                values = (request.form["firstName"], request.form["userName"], request.form["email"], encrypt(request.form["password"]),)
+                values = (request.form["firstName"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "static/images/profilePictures/"))
                 cursor.execute(sql, values)
                 connection.commit()
     
@@ -72,6 +72,7 @@ def login():
                 session["firstName"] = result["firstName"]
                 session["userName"] = result["userName"]
                 session["userID"] = result["userID"]
+                session["profilePicture"] = result["image"]
                 flash("login successful!")
                 return redirect("/home")
             else:

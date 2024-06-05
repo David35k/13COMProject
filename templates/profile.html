@@ -10,4 +10,6 @@
 <h1>first name:{{ session["firstName"] }}</h1>
 <h1>user name:{{ session["userName"] }}</h1>
 <h1>id:{{ session["userID"] }}</h1>
+<p>profile picture:</p>
+<img src='{{ session["profilePicture"] }}' style="width: 200px; border-radius: 100px">
 {% endblock content %}
