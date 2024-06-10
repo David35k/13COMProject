@@ -38,7 +38,7 @@ def index():
     return render_template("index.html")
 
 # lets a user create an account
-@app.route("/signup", methods=["GET", "POST"])
+@app.route("/user/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         with create_connection() as connection:
@@ -53,7 +53,7 @@ def signup():
     return render_template("signup.html")
 
 # logs an already existing user in
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/user/login", methods=["GET", "POST"])
 def login():
     session["epic"] = "cool"
     if request.method == "POST":
@@ -71,8 +71,10 @@ def login():
                 session["loggedIn"] = True
                 session["firstName"] = result["firstName"]
                 session["userName"] = result["userName"]
+                session["email"] = result["email"]
                 session["userID"] = result["userID"]
                 session["profilePicture"] = result["image"]
+                print(session["profilePicture"])
                 flash("login successful!")
                 return redirect("/home")
             else:
@@ -83,11 +85,23 @@ def login():
     return render_template("login.html")
 
 # logs the user out by clearing the session variables that contain info about them
-@app.route("/logout")
+@app.route("/user/logout")
 def logout():
     session.clear()
     flash("logged out")
-    return redirect("/login")
+    return redirect("/user/login")
+
+# a page where the user can check and edit their profile 
+@app.route("/user")
+def profile():
+    return render_template("profile.html")
+    
+
+# lets the user update their profile
+@app.route("/user/edit", methods = ["GET", "POST"])
+def updateProfile():
+    return render_template("editProfile.html")
+
 
 # main page users will spend the most time on, shows post feed and allat
 @app.route("/home")
@@ -118,8 +132,6 @@ def home():
                                 likeArr.append(True)
                                 count += 1
                                 break
-                        
-                    # count += 1
                     
                 print(likeArr)
 
@@ -127,7 +139,7 @@ def home():
     return render_template("home.html", posts=result, tags=tags, likes=likes, likeArr=likeArr)
 
 # for creating posts
-@app.route("/createPost", methods=["GET", "POST"])
+@app.route("/post/create", methods=["GET", "POST"])
 def createPost():
      if request.method == "POST":
         with create_connection() as connection:
@@ -152,7 +164,7 @@ def createPost():
      return render_template("createPost.html")
 
 # for liking posts
-@app.route("/like")
+@app.route("/post/like")
 def like():
     with create_connection() as connection:
             with connection.cursor() as cursor:
@@ -191,9 +203,4 @@ def like():
 
                 return str(result["likes"])
 
-# a page where the user can check and edit their profile 
-@app.route("/profile")
-def profile():
-    return render_template("profile.html")
-    
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server

@@ -31,16 +31,16 @@
                 <div class="dropdown-content">
                     <a class="dropdown-link">{{ session["userName"] }}</a>
                     <hr>
-                    <a class="dropdown-link" href="/profile">Profile</a>
-                    <a class="dropdown-link" href="/createPost">Create Post</a>
+                    <a class="dropdown-link" href="/user">Profile</a>
+                    <a class="dropdown-link" href="/post/create">Create Post</a>
                     <hr>
-                    <a class="dropdown-link" href="/settings">Settings</a>
-                    <a class="dropdown-link" href="/logout">Log Out</a>
+                    <a class="dropdown-link" href="/user/settings">Settings</a>
+                    <a class="dropdown-link" href="/user/logout">Log Out</a>
                 </div>
             </div>
             {% else %}
-            <a href="/login" class="roboto-bold">LOG IN</a>
-            <a href="/signup" class="roboto-bold pill">SIGN UP</a>
+            <a href="/user/login" class="roboto-bold">LOG IN</a>
+            <a href="/user/signup" class="roboto-bold pill">SIGN UP</a>
             {% endif %}
 
         </nav>
