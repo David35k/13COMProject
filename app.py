@@ -37,6 +37,12 @@ def saveFile(file, path, default = None):
 def index():
     return render_template("index.html")
 
+# a page where the user can check and edit their profile 
+@app.route("/user")
+def profile():
+    return render_template("profile.html")
+    
+
 # lets a user create an account
 @app.route("/user/signup", methods=["GET", "POST"])
 def signup():
@@ -74,7 +80,6 @@ def login():
                 session["email"] = result["email"]
                 session["userID"] = result["userID"]
                 session["profilePicture"] = result["image"]
-                print(session["profilePicture"])
                 flash("login successful!")
                 return redirect("/home")
             else:
@@ -91,15 +96,32 @@ def logout():
     flash("logged out")
     return redirect("/user/login")
 
-# a page where the user can check and edit their profile 
-@app.route("/user")
-def profile():
-    return render_template("profile.html")
-    
-
 # lets the user update their profile
 @app.route("/user/edit", methods = ["GET", "POST"])
 def updateProfile():
+
+    if request.method == "POST":
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = """UPDATE users SET firstName= %s, userName = %s, email = %s, image = %s
+                        WHERE userID = %s
+                """
+                if(not request.files["image"]):
+                    imagePath = session["profilePicture"]
+                    values = (request.form["firstName"], request.form["userName"], request.form["email"], imagePath, session["userID"])
+                else:
+                    imagePath = saveFile(request.files["image"], "static/images/profilePictures/")
+                    values = (request.form["firstName"], request.form["userName"], request.form["email"], imagePath, session["userID"])
+
+                session["firstName"] = request.form["firstName"]
+                session["userName"] = request.form["userName"]
+                session["email"] = request.form["email"]
+                session["profilePicture"] = imagePath
+
+                # TODO: make it so that it deletes the old image
+                cursor.execute(sql, values)
+                connection.commit()
+
     return render_template("editProfile.html")
 
 
