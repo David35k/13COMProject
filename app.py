@@ -43,7 +43,7 @@ def profile():
     return render_template("profile.html")
     
 
-# lets a user create an account
+# lets a user create an account and inserts them into the database
 @app.route("/user/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -55,6 +55,8 @@ def signup():
                 values = (request.form["firstName"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "static/images/profilePictures/"))
                 cursor.execute(sql, values)
                 connection.commit()
+
+                return redirect("login")
     
     return render_template("signup.html")
 
@@ -125,6 +127,10 @@ def updateProfile():
     return render_template("editProfile.html")
 
 
+@app.route("/user/posts")
+def userPosts():
+    return render_template("userPosts.html")
+
 # main page users will spend the most time on, shows post feed and allat
 @app.route("/home")
 def home():
@@ -154,9 +160,6 @@ def home():
                                 likeArr.append(True)
                                 count += 1
                                 break
-                    
-                print(likeArr)
-
                 
     return render_template("home.html", posts=result, tags=tags, likes=likes, likeArr=likeArr)
 
