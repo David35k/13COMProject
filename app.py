@@ -82,6 +82,7 @@ def login():
                 session["email"] = result["email"]
                 session["userID"] = result["userID"]
                 session["profilePicture"] = result["image"]
+
                 flash("login successful!")
                 return redirect("/home")
             else:
@@ -129,7 +130,18 @@ def updateProfile():
 
 @app.route("/user/posts")
 def userPosts():
-    return render_template("userPosts.html")
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM posts WHERE userID = %s", session["userID"])
+            posts = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM tags")
+            tags = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM likes WHERE userID = %s", session["userID"])
+            likes = cursor.fetchall()            
+
+        return render_template("userPosts.html", posts=posts, tags=tags)
 
 # main page users will spend the most time on, shows post feed and allat
 @app.route("/home")
@@ -137,7 +149,7 @@ def home():
     with create_connection() as connection:
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM posts")
-                result = cursor.fetchall()
+                posts = cursor.fetchall()
 
                 cursor.execute("SELECT * FROM tags")
                 tags = cursor.fetchall()
@@ -148,7 +160,7 @@ def home():
                 likeArr = []
                 count = 0
 
-                for post in result:
+                for post in posts:
                     for like in likes:
                         if like["userID"] == session["userID"] and post["postID"] == like["postID"]:
                             # do if the user liked the post:
@@ -161,7 +173,7 @@ def home():
                                 count += 1
                                 break
                 
-    return render_template("home.html", posts=result, tags=tags, likes=likes, likeArr=likeArr)
+    return render_template("home.html", posts=posts, tags=tags, likes=likes, likeArr=likeArr)
 
 # for creating posts
 @app.route("/post/create", methods=["GET", "POST"])

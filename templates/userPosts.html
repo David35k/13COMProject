@@ -7,5 +7,25 @@
 {% endblock style %}
 
 {% block content %}
-
+<div id="post-feed" class="border-gradient">
+    <p>post feed</p>
+    <div>
+        {% for post in posts %}
+        <div style="background-color: blue;" class="post">
+            <p>Title: <span class="roboto-bold">{{ post["title"] }} {{ post["postID"] }}</span></p>
+            <p>tags:
+                {% for tag in tags %}
+                {% if tag["postID"] == post["postID"]%}
+                "{{ tag["tag"] }}"
+                {% endif %}
+                {% endfor %}
+            </p>
+            <p>likes: <span class='{{ post["postID"] }}'>{{ post["likes"] }}</span></p>
+            <div class="post-img-div">
+                <img src='{{ post["image"] }}' class="post-img">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}
