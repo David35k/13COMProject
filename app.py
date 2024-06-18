@@ -111,10 +111,10 @@ def updateProfile():
                 """
                 if(not request.files["image"]):
                     imagePath = session["profilePicture"]
-                    values = (request.form["firstName"], request.form["userName"], request.form["email"], imagePath, session["userID"])
                 else:
                     imagePath = saveFile(request.files["image"], "static/images/profilePictures/")
-                    values = (request.form["firstName"], request.form["userName"], request.form["email"], imagePath, session["userID"])
+
+                values = (request.form["firstName"], request.form["userName"], request.form["email"], imagePath, session["userID"])
 
                 session["firstName"] = request.form["firstName"]
                 session["userName"] = request.form["userName"]
@@ -239,5 +239,63 @@ def like():
                 result = cursor.fetchone()
 
                 return str(result["likes"])
+
+@app.route("/post/delete")
+def deletePost():
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM posts WHERE postID = %s AND userID = %s", (request.args["postID"], session["userID"]))
+            connection.commit()
+            
+            return redirect("/user/posts")
+
+@app.route("/post/edit", methods = ["GET", "POST"])
+def editPost():
+    if request.method == "POST":
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM posts WHERE postID = %s", request.args["postID"])
+                post = cursor.fetchone()
+
+                if(not request.files["image"]):
+                    imagePath = post["image"]
+                else:
+                    imagePath = saveFile(request.files["image"], "static/images/postImages/")
+
+                sql = "UPDATE posts SET title= %s, image = %s, description = %s WHERE postID = %s"
+                values = (request.form["title"], imagePath, request.form["description"], post["postID"])
+
+                cursor.execute(sql, values)
+                cursor.execute("DELETE FROM tags WHERE postID = %s", post["postID"])
+
+                tags = [x.strip() for x in request.form["tags"].split(',')]
+
+                for tag in tags:
+                    sql = "INSERT INTO tags (tag, postID) VALUES (%s, %s)"
+                    values = (tag, post["postID"])
+                    cursor.execute(sql, values)
+
+                connection.commit()
+
+                return redirect("/user/posts")
+    else:
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM posts WHERE postID = %s", request.args["postID"])
+                post = cursor.fetchone()
+
+                cursor.execute("SELECT * FROM tags WHERE postID = %s", post["postID"])
+                tags = cursor.fetchall()
+                tagString = ""
+                
+                for tag in tags:
+                    tagString += tag["tag"] + ","
+
+                tagString = tagString[:-1]
+
+                print(tagString)
+
+                return render_template("editPost.html", post=post, tagString=tagString)
+
 
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server

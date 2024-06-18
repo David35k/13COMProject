@@ -3,12 +3,11 @@
 {% block title %}Your Posts{% endblock title %}
 
 {% block style %}
-
+<link rel="stylesheet" href="/static/style/userPosts.css">
 {% endblock style %}
 
 {% block content %}
 <div id="post-feed" class="border-gradient">
-    <p>post feed</p>
     <div>
         {% for post in posts %}
         <div style="background-color: blue;" class="post">
@@ -23,6 +22,10 @@
             <p>likes: <span class='{{ post["postID"] }}'>{{ post["likes"] }}</span></p>
             <div class="post-img-div">
                 <img src='{{ post["image"] }}' class="post-img">
+            </div>
+            <div class="options-div">
+                <a href='/post/edit?postID={{ post["postID"] }}'>edit</a>
+                <a href=' /post/delete?postID={{ post["postID"] }}'>delete</a>
             </div>
         </div>
         {% endfor %}

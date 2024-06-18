@@ -1,30 +1,35 @@
 {% extends "_layout.html" %}
 
-{% block title %}Sign Up{% endblock title %}
+{% block title %}Edit Profile{% endblock title %}
 
 {% block style %}
-<link rel="stylesheet" href="/static/style/createPost.css">
+
 {% endblock style %}
 
 {% block content %}
-
 <script src="/static/scripts/tags.js"></script>
 
 <form method="POST" enctype="multipart/form-data">
     <div>
         <label for=" title">Title</label>
-        <input id="title" name="title" type="text">
+        <input id="title" name="title" type="text" value='{{post["title"]}}'>
 
-        <label for="image">Image</label>
+        <!-- Display current profile picture if it exists -->
+        {% if post["image"] %}
+        <img src="{{ post['image'] }}" alt="post image" id="currentPostImage">
+        {% endif %}
+
+        <!-- File input for uploading a new profile picture -->
+        <label for="image">image</label>
         <input id="image" name="image" type="file" accept="image/*">
 
         <label for="description">description</label>
-        <input id="description" name="description" type="text">
+        <input id="description" name="description" type="text" value='{{post["description"]}}'>
 
         <label for="tag-input">Enter tags:</label>
         <input type="text" id="tag-input" placeholder="Type a tag and press enter">
         <div id="tag-container"></div>
-        <input type="hidden" id="tag-list" name="tags">
+        <input type="hidden" id="tag-list" name="tags" value='{{tagString}}'>
 
     </div>
     <button>yippee</button>

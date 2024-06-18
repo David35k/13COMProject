@@ -1,0 +1,20 @@
+#post-feed {
+    background-color: #434343;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.post {
+    max-width: 725px;
+}
+
+.post-img {
+    max-width: 300px;
+    margin: 25px;
+}
+
+.post-img-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
