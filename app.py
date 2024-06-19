@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, flash, redirect
 import pymysql
 import hashlib
 import uuid
+import os
 
 app = Flask(__name__)
 
@@ -31,6 +32,9 @@ def saveFile(file, path, default = None):
         return "/" + filePath
     else:
         return default
+
+def deleteFile(filePath):
+    os.remove(os.path.dirname(os.path.abspath(__file__)) + filePath)
 
 # main landing page when first visiting the website
 @app.route("/")
@@ -112,6 +116,7 @@ def updateProfile():
                 if(not request.files["image"]):
                     imagePath = session["profilePicture"]
                 else:
+                    deleteFile(session["profilePicture"])
                     imagePath = saveFile(request.files["image"], "static/images/profilePictures/")
 
                 values = (request.form["firstName"], request.form["userName"], request.form["email"], imagePath, session["userID"])
@@ -244,8 +249,14 @@ def like():
 def deletePost():
     with create_connection() as connection:
         with connection.cursor() as cursor:
+
+            cursor.execute("SELECT * FROM posts WHERE postID = %s", request.args["postID"])
+            post = cursor.fetchone()
+
             cursor.execute("DELETE FROM posts WHERE postID = %s AND userID = %s", (request.args["postID"], session["userID"]))
             connection.commit()
+
+            deleteFile(post["image"])
             
             return redirect("/user/posts")
 
@@ -260,6 +271,7 @@ def editPost():
                 if(not request.files["image"]):
                     imagePath = post["image"]
                 else:
+                    deleteFile(post["image"])
                     imagePath = saveFile(request.files["image"], "static/images/postImages/")
 
                 sql = "UPDATE posts SET title= %s, image = %s, description = %s WHERE postID = %s"
