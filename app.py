@@ -153,7 +153,18 @@ def userPosts():
 def home():
     with create_connection() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM posts")
+
+                # this is the default
+                if(not request.args.get("sortby")):
+                    return redirect("/home?sortby=recent")
+
+                if(request.args["sortby"] == "recent"):
+                    cursor.execute("SELECT * FROM posts ORDER BY time DESC")
+                elif (request.args["sortby"] == "likes"):
+                    cursor.execute("SELECT * FROM posts ORDER BY likes DESC")
+                elif (request.args["sortby"] == "oldest"):
+                    cursor.execute("SELECT * FROM posts ORDER BY time ASC")
+
                 posts = cursor.fetchall()
 
                 cursor.execute("SELECT * FROM tags")
@@ -178,7 +189,7 @@ def home():
                                 count += 1
                                 break
                 
-    return render_template("home.html", posts=posts, tags=tags, likes=likes, likeArr=likeArr)
+    return render_template("home.html", posts=posts, tags=tags, likes=likes, likeArr=likeArr, sortby=request.args["sortby"])
 
 # for creating posts
 @app.route("/post/create", methods=["GET", "POST"])

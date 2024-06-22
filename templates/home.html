@@ -19,6 +19,17 @@
         <form id="search-form">
             <input type="search" placeholder="Search OneBit:">
         </form>
+        <div id="sort-div">
+            <div class="dropdown">
+                <a class="roboto-bold">sort by: {{ sortby }}</a>
+                <div class="dropdown-content">
+                    <a class="dropdown-link" href="/home?sortby=recent">recent</a>
+                    <a class="dropdown-link" href="/home?sortby=likes">likes</a>
+                    <a class="dropdown-link" href="/home?sortby=oldest">oldest</a>
+                </div>
+            </div>
+
+        </div>
         <div id="post-feed" class="border-gradient">
             <p>post feed</p>
             <div>
