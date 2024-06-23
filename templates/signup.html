@@ -7,6 +7,7 @@
 {% endblock style %}
 
 {% block content %}
+<script src="/static/scripts/signup.js"></script>
 <div id="main-div">
     <div id="left-div">
         <h1>SIGN UP</h1>
@@ -19,32 +20,41 @@
         <form method="POST" enctype="multipart/form-data">
             <div id="left-form-div">
                 <div>
-                    <label for="firstName">First Name</label><br>
-                    <input id="firstName" name="firstName">
+                    <label for="firstName">Name</label><br>
+                    <input id="firstName" name="firstName" class="text-input">
                 </div>
 
                 <div>
                     <label for="userName">Username</label><br>
-                    <input id="userName" name="userName">
+                    <input id="userName" name="userName" class="text-input">
                 </div>
 
                 <div>
-                    <label for="email">email</label><br>
-                    <input id="email" name="email" type="email">
+                    <label for="email">Email</label><br>
+                    <input id="email" name="email" type="email" class="text-input">
                 </div>
 
                 <div>
-                    <label for="password">password</label><br>
-                    <input id="password" name="password" type="password">
+                    <label for="password">Password</label><br>
+                    <input id="password" name="password" type="password" class="text-input">
                 </div>
             </div>
-            <div>
-                <label for="image">profil picture</label>
-                <input id="image" name="image" type="file" accept="image/*">
+
+            <div id="image-thing-div">
+                <div id="preview" class="preview"></div>
+
+                <div class="drop-area-wrapper">
+                    <div id="dropArea" class="drop-area">
+                        <p>Drag & Drop your image here or click to upload</p>
+                        <input id="fileInput" name="image" type="file" accept="image/*" class="file-input"
+                            style="background-color: red;">
+                    </div>
+                </div>
+
             </div>
 
         </form>
-        <button class="gradient-button">CONTINUE</button>
+        <button class="gradient-button button-thing roboto-medium">CONTINUE</button>
     </div>
 </div>
 
