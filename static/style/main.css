@@ -36,7 +36,7 @@ body {
     padding: 20px;
     border-radius: 15px;
     /* Adjust the border radius */
-    background: white;
+    /* background: white; */
     /* Inner background color */
 }
 
@@ -141,12 +141,11 @@ nav a:hover {
     color: white;
 }
 
-nav a.pill {
+.gradient-button {
     background: linear-gradient(120deg, #0F62FE, #15B4E7);
     color: white;
+    border: none;
 }
-
-
 
 .action-button {
     padding: 20px;
