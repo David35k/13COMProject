@@ -11,48 +11,117 @@
 
 <div id="main-div">
     <h1 style="margin-bottom: 25px;">SIGN UP</h1>
-    <div class="border-gradient signup-section">
-        <h2>Account Details</h2>
-        <form method="POST" enctype="multipart/form-data">
-            <div id="left-form-div">
-                <div>
-                    <label for="firstName">Name</label><br>
-                    <input id="firstName" name="firstName" class="text-input">
+    <form method="POST" enctype="multipart/form-data">
+        <div class="border-gradient signup-section">
+            <h2>Account Details</h2>
+            <div class="first-section">
+                <div id="left-form-div">
+                    <div>
+                        <label for="firstName" class="roboto-bold">Name</label><br>
+                        <input id="firstName" name="firstName" class="text-input">
+                    </div>
+                    <div>
+                        <label for="email" class="roboto-bold">Email</label><br>
+                        <input id="email" name="email" type="email" class="text-input">
+                    </div>
+                    <div>
+                        <label for="userName" class="roboto-bold">Username</label><br>
+                        <input id="userName" name="userName" class="text-input">
+                    </div>
+                    <div>
+                        <label for="password" class="roboto-bold">Password</label><br>
+                        <input id="password" name="password" type="password" class="text-input">
+                    </div>
                 </div>
 
-                <div>
-                    <label for="userName">Username</label><br>
-                    <input id="userName" name="userName" class="text-input">
-                </div>
+                <div id="image-thing-div">
+                    <h3 class="roboto-bold">Profile Picture</h3>
+                    <img id="image-preview" src="#" alt="Image Preview">
+                    <div class="drop-area-wrapper">
+                        <div id="dropArea" class="drop-area">
+                            <p style="pointer-events: none;">Drag & Drop your image here or click to upload</p>
+                            <input id="fileInput" name="image" type="file" accept="image/*" class="file-input"
+                                style="background-color: red;">
+                        </div>
+                    </div>
 
-                <div>
-                    <label for="email">Email</label><br>
-                    <input id="email" name="email" type="email" class="text-input">
-                </div>
-
-                <div>
-                    <label for="password">Password</label><br>
-                    <input id="password" name="password" type="password" class="text-input">
                 </div>
             </div>
-
-            <div id="image-thing-div">
-                <p>Profile Picture</p>
-                <img id="image-preview" src="#" alt="Image Preview">
-                <div class="drop-area-wrapper">
-                    <div id="dropArea" class="drop-area">
-                        <p style="pointer-events: none;">Drag & Drop your image here or click to upload</p>
-                        <input id="fileInput" name="image" type="file" accept="image/*" class="file-input"
-                            style="background-color: red;">
+        </div>
+        <div class="border-gradient signup-section">
+            <h2>Extra Details</h2>
+            <div>
+                <h3>Interests</h3>
+                <div class="choices-div">
+                    <div class="choice">
+                        <label for="programming-opt">Programming</label>
+                        <input id="programming-opt" name="programming-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="electronics-opt">Electronics</label>
+                        <input id="electronics-opt" name="electronics-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="webdev-opt">Web Dev</label>
+                        <input id="webdev-opt" name="webdev-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="design-opt">Design</label>
+                        <input id="design-opt" name="design-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="robotics-opt">Robotics</label>
+                        <input id="robotics-opt" name="robotics-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="ai-opt">AI</label>
+                        <input id="ai-opt" name="ai-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="datascience-opt">Data Science</label>
+                        <input id="datascience-opt" name="datascience-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="networking-opt">Networking</label>
+                        <input id="networking-opt" name="networking-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="cloudcomputing-opt">Cloud Computing</label>
+                        <input id="cloudcomputing-opt" name="cloudcomputing-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="cybersecurity-opt">Cybersecurity</label>
+                        <input id="cybersecurity-opt" name="cybersecurity-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="gamedev-opt">Game Dev</label>
+                        <input id="gamedev-opt" name="gamedev-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="machinelearning-opt">Machine Learning</label>
+                        <input id="machinelearning-opt" name="machinelearning-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="iot-opt">IoT</label>
+                        <input id="iot-opt" name="iot-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="blockchain-opt">Blockchain</label>
+                        <input id="blockchain-opt" name="blockchain-opt" type="checkbox">
+                    </div>
+                    <div class="choice">
+                        <label for="database-opt">Database</label>
+                        <input id="database-opt" name="database-opt" type="checkbox">
                     </div>
                 </div>
 
             </div>
-
-        </form>
-        <button class="gradient-button button-thing roboto-medium">CONTINUE</button>
-    </div>
-
+            <div class="age-thing">
+                <label for="age" class="roboto-bold">Age</label>
+                <input id="age" name="age" type="number">
+            </div>
+        </div>
+    </form>
 </div>
 
 {% endblock content %}

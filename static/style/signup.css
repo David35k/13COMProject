@@ -8,16 +8,17 @@
 .signup-section {
     border-radius: 15px;
     background: #434343;
-    max-width: 65vw;
+    max-width: 40vw;
     padding: 0px 75px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 30px;
 }
 
 form {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
     margin-top: -25px;
 }
@@ -33,7 +34,8 @@ form {
 #left-form-div {
     display: flex;
     flex-direction: column;
-    padding: 50px;
+    margin: 0px 50px;
+    margin-bottom: 50px;
 }
 
 #left-form-div>div {
@@ -51,6 +53,12 @@ form {
     border-radius: 10px;
     padding: 15px;
     border: none;
+}
+
+.first-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 /* chatgpt starts here! */
@@ -113,4 +121,34 @@ form {
     border: 3px solid #15B4E7;
     margin: 10px;
     margin-bottom: 20px;
+}
+
+.choices-div {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 500px;
+    overflow-y: auto;
+    max-width: 50vw;
+}
+
+.choice {
+    width: 200px;
+    /* Adjust width as needed */
+    display: flex;
+    align-items: center;
+}
+
+.choice label {
+    flex: 1;
+}
+
+.choice input {
+    margin-left: 10px;
+}
+
+
+.age-thing {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
 }
