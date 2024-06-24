@@ -8,14 +8,10 @@
 
 {% block content %}
 <script src="/static/scripts/signup.js"></script>
+
 <div id="main-div">
-    <div id="left-div">
-        <h1>SIGN UP</h1>
-        <button class="gradient-button left-button roboto-medium">Account Details</button>
-        <button class="gradient-button left-button roboto-medium">Extra Details</button>
-        <a href="/">Cancel</a>
-    </div>
-    <div id="right-div" class="border-gradient">
+    <h1 style="margin-bottom: 25px;">SIGN UP</h1>
+    <div class="border-gradient signup-section">
         <h2>Account Details</h2>
         <form method="POST" enctype="multipart/form-data">
             <div id="left-form-div">
@@ -41,11 +37,11 @@
             </div>
 
             <div id="image-thing-div">
-                <div id="preview" class="preview"></div>
-
+                <p>Profile Picture</p>
+                <img id="image-preview" src="#" alt="Image Preview">
                 <div class="drop-area-wrapper">
                     <div id="dropArea" class="drop-area">
-                        <p>Drag & Drop your image here or click to upload</p>
+                        <p style="pointer-events: none;">Drag & Drop your image here or click to upload</p>
                         <input id="fileInput" name="image" type="file" accept="image/*" class="file-input"
                             style="background-color: red;">
                     </div>
@@ -56,6 +52,7 @@
         </form>
         <button class="gradient-button button-thing roboto-medium">CONTINUE</button>
     </div>
+
 </div>
 
 {% endblock content %}

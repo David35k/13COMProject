@@ -1,25 +1,17 @@
-// script.js
-const fileInput = document.getElementById('fileInput');
-const preview = document.getElementById('preview');
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('image-preview');
 
-fileInput.addEventListener('change', () => {
-    const files = fileInput.files;
-    handleFiles(files);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = 'none';
+        }
+    });
 });
-
-function handleFiles(files) {
-    files = [...files];
-    files.forEach(previewFile);
-}
-
-function previewFile(file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-        const img = document.createElement('img');
-        img.src = reader.result;
-        preview.innerHTML = '';
-        preview.appendChild(img);
-    }
-}

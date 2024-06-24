@@ -1,17 +1,11 @@
 #main-div {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 40px;
-}
-
-#left-div {
-    display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 10px;
 }
 
-#right-div {
+.signup-section {
     border-radius: 15px;
     background: #434343;
     max-width: 65vw;
@@ -25,6 +19,7 @@ form {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin-top: -25px;
 }
 
 .left-button {
@@ -48,7 +43,7 @@ form {
 .button-thing {
     font-size: 20px;
     margin: 15px;
-    padding: 15px;
+    padding: 15px 25px;
     border-radius: 7.5px;
 }
 
@@ -89,7 +84,7 @@ form {
     width: 100%;
     height: 100%;
     padding: 20px;
-    opacity: 0.1;
+    opacity: 0;
     cursor: pointer;
 }
 
@@ -101,4 +96,21 @@ form {
 .preview img {
     max-width: 100%;
     height: auto;
+}
+
+#image-thing-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#image-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+    object-fit: cover;
+    display: none;
+    border: 3px solid #15B4E7;
+    margin: 10px;
+    margin-bottom: 20px;
 }
