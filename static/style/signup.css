@@ -43,9 +43,9 @@ form {
 }
 
 .button-thing {
-    font-size: 20px;
+    font-size: 25px;
     margin: 15px;
-    padding: 15px 25px;
+    padding: 15px 35px;
     border-radius: 7.5px;
 }
 
@@ -132,10 +132,11 @@ form {
 }
 
 .choice {
-    width: 200px;
+    width: 190px;
     /* Adjust width as needed */
     display: flex;
     align-items: center;
+    margin-right: 15px;
 }
 
 .choice label {
@@ -146,9 +147,9 @@ form {
     margin-left: 10px;
 }
 
-
 .age-thing {
     display: flex;
     flex-direction: column;
-    margin-top: 50px;
+    align-items: center;
+    margin: 50px;
 }
