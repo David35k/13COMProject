@@ -1,0 +1,23 @@
+.main-thing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-thing {
+    max-width: 500px;
+    background-color: #434343;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form>div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}

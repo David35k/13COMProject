@@ -3,20 +3,26 @@
 {% block title %}Log In{% endblock title %}
 
 {% block style %}
-
+<link rel="stylesheet" href="/static/style/login.css">
 {% endblock style %}
 
 {% block content %}
-<form method="POST">
-    <div>
-        <label for="userName">Username</label>
-        <input id="userName" name="userName">
+<div style="width: 100vw; height: 80vh;" class="main-thing">
+    <div class="login-thing border-gradient">
+        <form method="POST">
+            <div>
+                <label for="userName">Username</label>
+                <input id="userName" name="userName">
 
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password">
+            </div>
+            <button>LOG IN</button>
+        </form>
     </div>
-    <button>LOG IN</button>
-</form>
+</div>
+
+
 
 {% with messages = get_flashed_messages() %}
 {% if messages %}
