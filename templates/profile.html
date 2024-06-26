@@ -8,15 +8,16 @@
 
 {% block content %}
 <div class="main-div">
-    <div class="profile-thing">
+    <div class="border-gradient profile-thing">
         <img src='{{ session["profilePicture"] }}' class="pfp">
         <h1>{{ session["userName"] }}</h1>
-        <h3>{{ session["firstName"] }} {{ session["userID"] }}</h1>
+        <h3>{{ session["firstName"] }} {{ session["userID"] }}</h3>
+        <div class="stats-thing">
+            <p>posts made: {{ postNum }}</p>
+            <p>likes received: {{ likeCount }}</p>
+        </div>
+        <a href="/user/edit">edit profile</a>
     </div>
 </div>
-
-
-
-<a href="/user/edit">edit profile</a>
 
 {% endblock content %}

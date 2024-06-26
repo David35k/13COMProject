@@ -44,7 +44,17 @@ def index():
 # a page where the user can check and edit their profile 
 @app.route("/user")
 def profile():
-    return render_template("profile.html")
+    with create_connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM posts WHERE userID = %s", session["userID"])
+                posts = cursor.fetchall()
+
+                likeCount = 0
+
+                for post in posts:
+                    likeCount += int(post["likes"])
+
+    return render_template("profile.html", postNum = len(posts), likeCount = likeCount)
     
 
 # lets a user create an account and inserts them into the database
