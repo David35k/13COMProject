@@ -5,19 +5,36 @@
 }
 
 .login-thing {
-    max-width: 500px;
+    max-width: 350px;
+    max-height: 500px;
     background-color: #434343;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 form {
+    padding: 75px 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 form>div {
-    width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 20px 0px;
+}
 
+input {
+    border-radius: 10px;
+    padding: 15px;
+    border: none;
+}
+
+.button-thing {
+    font-size: 20px;
+    margin: 15px;
+    padding: 10px 25px;
+    border-radius: 7.5px;
 }
