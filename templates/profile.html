@@ -3,15 +3,18 @@
 {% block title %}Welcome to OneBit{% endblock title %}
 
 {% block style %}
-
+<link rel="stylesheet" href="/static/style/profile.css">
 {% endblock style %}
 
 {% block content %}
-<h1>first name:{{ session["firstName"] }}</h1>
-<h1>user name:{{ session["userName"] }}</h1>
-<h1>id:{{ session["userID"] }}</h1>
-<p>profile picture:</p>
-<img src='{{ session["profilePicture"] }}' style="width: 200px; border-radius: 100px">
+<div class="main-div">
+    <div class="profile-thing">
+        <img src='{{ session["profilePicture"] }}' class="pfp">
+        <h1>{{ session["userName"] }}</h1>
+        <h3>{{ session["firstName"] }} {{ session["userID"] }}</h1>
+    </div>
+</div>
+
 
 
 <a href="/user/edit">edit profile</a>
