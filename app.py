@@ -184,21 +184,16 @@ def home():
                 likes = cursor.fetchall()
 
                 likeArr = []
-                count = 0
 
                 for post in posts:
                     for like in likes:
                         if like["userID"] == session["userID"] and post["postID"] == like["postID"]:
                             # do if the user liked the post:
-                                if post["postID"] - count > 0:
-                                    for n in range(post["postID"] - count):
-                                        likeArr.append(False)
-                                        count += 1
+                            likeArr.append(post["postID"])
 
-                                likeArr.append(True)
-                                count += 1
-                                break
-                
+
+                print(likeArr)
+
     return render_template("home.html", posts=posts, tags=tags, likes=likes, likeArr=likeArr, sortby=request.args["sortby"])
 
 # for creating posts
@@ -233,6 +228,7 @@ def like():
             with connection.cursor() as cursor:
                 postID = request.args.get("postID")
                 alreadyLiked = False;
+
 
                 # check if the user already liked the post
                 sql = "SELECT userID FROM likes WHERE postID = %s"

@@ -34,14 +34,14 @@
             <div>
                 {% for post in posts %}
                 <div class="post">
-                    <h2 class="roboto-bold">{{ post["title"] }}</h2>
+                    <h2 class="roboto-bold">{{ post["title"] }} {{ post["postID"] }}</h2>
                     <div class="post-img-div">
                         <img src='{{ post["image"] }}' class="post-img">
                     </div>
                     <div class="socials-bar">
                         <div>
                             <button class="like-button" id='{{post["postID"]}}'>
-                                {% if likeArr[post["postID"]] == true %}
+                                {% if post["postID"] in likeArr %}
                                 <div class="heart"></div>
                                 {% else %}
                                 <div class="heart heart-hollow"></div>
