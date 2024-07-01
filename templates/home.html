@@ -31,11 +31,29 @@
 
         </div>
         <div id="post-feed" class="border-gradient">
-            <p>post feed</p>
             <div>
                 {% for post in posts %}
-                <div style="background-color: blue;" class="post">
-                    <p>Title: <span class="roboto-bold">{{ post["title"] }} {{ post["postID"] }}</span></p>
+                <div class="post">
+                    <h2 class="roboto-bold">{{ post["title"] }}</h2>
+                    <div class="post-img-div">
+                        <img src='{{ post["image"] }}' class="post-img">
+                    </div>
+                    <div class="socials-bar">
+                        <div>
+                            <button class="like-button" id='{{post["postID"]}}'>
+                                {% if likeArr[post["postID"]] == true %}
+                                <div class="heart"></div>
+                                {% else %}
+                                <div class="heart heart-hollow"></div>
+                                {% endif %}
+                            </button>
+                            <p class='{{ post["postID"] }} like-text'>{{ post["likes"] }}</p>
+                        </div>
+
+                        <a><img src="/static/images/websiteImages/commentThing.png" width="40px"></a>
+                        <a><img src="/static/images/websiteImages/shareThing.png" width="40px"></a>
+                    </div>
+                    <p>description: {{ post["description"] }}</p>
                     <p>tags:
                         {% for tag in tags %}
                         {% if tag["postID"] == post["postID"]%}
@@ -43,21 +61,6 @@
                         {% endif %}
                         {% endfor %}
                     </p>
-                    <p>likes: <span class='{{ post["postID"] }}'>{{ post["likes"] }}</span></p>
-                    <div class="post-img-div">
-                        <img src='{{ post["image"] }}' class="post-img">
-                    </div>
-                    <div class="socials-bar">
-                        <button class="like-button" id='{{post["postID"]}}'>
-                            {% if likeArr[post["postID"]] == true %}
-                            <div class="heart"></div>
-                            {% else %}
-                            <div class="heart heart-hollow"></div>
-                            {% endif %}
-                        </button>
-                        <a>comment</a>
-                        <a>share</a>
-                    </div>
                 </div>
                 {% endfor %}
             </div>
