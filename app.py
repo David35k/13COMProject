@@ -159,7 +159,7 @@ def userPosts():
         return render_template("userPosts.html", posts=posts, tags=tags)
 
 # main page users will spend the most time on, shows post feed and allat
-@app.route("/home")
+@app.route("/home", methods = ["GET", "POST"])
 def home():
     with create_connection() as connection:
             with connection.cursor() as cursor:
@@ -173,8 +173,8 @@ def home():
                 sql = "SELECT * FROM posts"
 
                 # Check if search parameter is provided
-                if "search" in request.args and request.args["search"]:
-                    sql += " WHERE title LIKE '%" + request.args["search"] + "%'"
+                if "search" in request.form and request.form["search"]:
+                    sql += " WHERE title LIKE '%" + request.form["search"] + "%'"
 
                 # Check for sorting parameter
                 if "sortby" in request.args:
