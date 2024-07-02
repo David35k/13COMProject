@@ -165,25 +165,27 @@ def home():
             with connection.cursor() as cursor:
 
                 # this is the default
-                if(not request.args.get("sortby")):
+                if(not "sortby" in request.args):
+                    print("ohio")
                     return redirect("/home?sortby=recent")
                 
-                sql = ""
+                    # Base SQL query
+                sql = "SELECT * FROM posts"
 
-                if(request.args["sortby"] == "recent"):
-                    sql = "SELECT * FROM posts ORDER BY time DESC"
-                elif (request.args["sortby"] == "likes"):
-                    sql = "SELECT * FROM posts ORDER BY likes DESC"
-                elif (request.args["sortby"] == "oldest"):
-                    sql = "SELECT * FROM posts ORDER BY time ASC"
+                # Check if search parameter is provided
+                if "search" in request.args and request.args["search"]:
+                    sql += " WHERE title LIKE '%" + request.args["search"] + "%'"
 
-                if (request.form["search"]):
-                    search_term = "%" + request.args["search"] + "%"
-                    sql += " WHERE title LIKE %s"
-                    sql += f" ORDER BY {sortby}"
-                    cursor.execute(sql, search_term)
-                else:
-                    cursor.execute(sql)
+                # Check for sorting parameter
+                if "sortby" in request.args:
+                    if request.args["sortby"] == "recent":
+                        sql += " ORDER BY time DESC"
+                    elif request.args["sortby"] == "likes":
+                        sql += " ORDER BY likes DESC"
+                    elif request.args["sortby"] == "oldest":
+                        sql += " ORDER BY time ASC"
+                        
+                cursor.execute(sql)
 
                 posts = cursor.fetchall()
 
