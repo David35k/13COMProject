@@ -63,10 +63,10 @@ def signup():
     if request.method == "POST":
         with create_connection() as connection:
             with connection.cursor() as cursor:
-                sql = """INSERT INTO users (firstName, userName, email, password, image)
+                sql = """INSERT INTO users (name, userName, email, password, image)
                         VALUES (%s, %s, %s, %s, %s);
                 """
-                values = (request.form["firstName"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "static/images/profilePictures/"))
+                values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "static/images/profilePictures/"))
                 cursor.execute(sql, values)
                 connection.commit()
 
@@ -91,7 +91,7 @@ def login():
         if result:
             if result["password"] == encrypt(request.form["password"]):
                 session["loggedIn"] = True
-                session["firstName"] = result["firstName"]
+                session["name"] = result["name"]
                 session["userName"] = result["userName"]
                 session["email"] = result["email"]
                 session["userID"] = result["userID"]
@@ -120,7 +120,7 @@ def updateProfile():
     if request.method == "POST":
         with create_connection() as connection:
             with connection.cursor() as cursor:
-                sql = """UPDATE users SET firstName= %s, userName = %s, email = %s, image = %s
+                sql = """UPDATE users SET name= %s, userName = %s, email = %s, image = %s
                         WHERE userID = %s
                 """
                 if(not request.files["image"]):
@@ -129,9 +129,9 @@ def updateProfile():
                     deleteFile(session["profilePicture"])
                     imagePath = saveFile(request.files["image"], "static/images/profilePictures/")
 
-                values = (request.form["firstName"], request.form["userName"], request.form["email"], imagePath, session["userID"])
+                values = (request.form["name"], request.form["userName"], request.form["email"], imagePath, session["userID"])
 
-                session["firstName"] = request.form["firstName"]
+                session["name"] = request.form["name"]
                 session["userName"] = request.form["userName"]
                 session["email"] = request.form["email"]
                 session["profilePicture"] = imagePath

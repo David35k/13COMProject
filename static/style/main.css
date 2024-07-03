@@ -207,3 +207,8 @@ nav a:hover {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.error-message {
+    color: rgb(253, 70, 70);
+    font-size: 12px;
+}
