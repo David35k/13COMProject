@@ -9,24 +9,42 @@
 {% block content %}
 
 <script src="/static/scripts/tags.js"></script>
+<script src="/static/scripts/imagePreview.js"></script>
+<script src="/static/scripts/createPost.js"></script>
 
-<form method="POST" enctype="multipart/form-data">
-    <div>
-        <label for=" title">Title</label>
-        <input id="title" name="title" type="text">
+<div id="main-div">
+    <div class="border-gradient createpost-section">
+        <form method="POST" enctype="multipart/form-data" id="form">
+            <div>
+                <label for="title" class="roboto-bold">Title</label>
+                <input id="title" name="title" type="text">
+            </div>
 
-        <label for="image">Image</label>
-        <input id="image" name="image" type="file" accept="image/*">
+            <div>
+                <label for="description" class="roboto-bold">Description</label>
+                <textarea id="description" name="description" rows="5" cols="50"></textarea>
+            </div>
 
-        <label for="description">description</label>
-        <input id="description" name="description" type="text">
+            <div>
+                <label for="tag-input" class="roboto-bold">Tags:</label>
+                <input type="text" id="tag-input" placeholder="Type a tag and press enter">
+                <div id="tag-container"></div>
+                <input type="hidden" id="tag-list" name="tags">
+            </div>
 
-        <label for="tag-input">Enter tags:</label>
-        <input type="text" id="tag-input" placeholder="Type a tag and press enter">
-        <div id="tag-container"></div>
-        <input type="hidden" id="tag-list" name="tags">
-
+            <div id="image-thing-div">
+                <h3 class="roboto-bold">Post Image</h3>
+                <img id="image-preview" src="#" alt="Image Preview">
+                <div class="drop-area-wrapper">
+                    <div id="dropArea" class="drop-area">
+                        <p style="pointer-events: none;">Drag & Drop your image here or click to upload</p>
+                        <input id="fileInput" name="image" type="file" accept="image/*" class="file-input"
+                            style="background-color: red;">
+                    </div>
+                </div>
+            </div>
+            <button class="gradient-button roboto-bold">Create</button>
+        </form>
     </div>
-    <button>yippee</button>
-</form>
+</div>
 {% endblock content %}

@@ -1,5 +1,29 @@
+#main-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.createpost-section {
+    border-radius: 15px;
+    background: #434343;
+    max-width: 50vw;
+    padding: 0px 75px;
+    margin-bottom: 30px;
+}
+
 form {
-    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
 }
 
 #tag-container {
@@ -9,6 +33,7 @@ form {
     min-height: 40px;
     display: flex;
     flex-wrap: wrap;
+    min-width: 300px;
 }
 
 .tag {
@@ -28,4 +53,72 @@ form {
     cursor: pointer;
     color: red;
     font-weight: bold;
+}
+
+/* chatgpt starts here! */
+
+.drop-area-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    padding: 75px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.drop-area p {
+    margin: 0;
+    font-size: 16px;
+    color: #aaa;
+    z-index: 1;
+    position: relative;
+}
+
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.preview {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.preview img {
+    max-width: 100%;
+    height: auto;
+}
+
+#image-thing-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#image-preview {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    display: none;
+    border: 3px solid #15B4E7;
+    margin: 10px;
+    margin-bottom: 20px;
+}
+
+form>button {
+    font-size: 30px;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 10px;
 }
