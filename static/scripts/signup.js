@@ -60,6 +60,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         } else {
+            if (input.value.trim().length === 0) {
+                isValid = false;
+                errorMessage = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
+            }
             if (input.value.length > limit) {
                 isValid = false;
                 errorMessage = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} cannot exceed ${limit} characters.`;

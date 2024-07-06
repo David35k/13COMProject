@@ -147,7 +147,7 @@ def updateProfile():
 def userPosts():
     with create_connection() as connection:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM posts WHERE userID = %s", session["userID"])
+            cursor.execute("SELECT * FROM posts WHERE userID = %s ORDER BY time DESC", session["userID"])
             posts = cursor.fetchall()
 
             cursor.execute("SELECT * FROM tags")

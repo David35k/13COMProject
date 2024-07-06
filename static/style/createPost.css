@@ -37,7 +37,7 @@ form>div {
 }
 
 .tag {
-    background-color: blue;
+    background: linear-gradient(120deg, #15B4E7, #2758B6);
     border-radius: 3px;
     padding: 5px;
     margin: 5px;

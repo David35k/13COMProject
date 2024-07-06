@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const form = document.getElementById('form');
     const fields = ['title', 'description'];
+    const fileInput = document.getElementById('fileInput');
 
     fields.forEach(field => {
         const input = document.getElementById(field);
@@ -16,6 +17,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (event) {
         let valid = true;
+
+        // Validate file input (image)
+
+        if (fileInput.files.length === 0) {
+            let errorMessageElement = document.getElementById('fileInput-error');
+            if (!errorMessageElement) {
+                errorMessageElement = document.createElement('div');
+                errorMessageElement.id = 'fileInput-error';
+                errorMessageElement.className = 'error-message';
+                fileInput.parentNode.appendChild(errorMessageElement);
+                errorMessageElement.textContent = 'Image is required.';
+
+            }
+
+            valid = false;
+        }
+
         fields.forEach(field => {
             const input = document.getElementById(field);
             if (!validateField(input, field, limits[field])) {
@@ -28,22 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    document.getElementById('fileInput').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        const preview = document.getElementById('image-preview');
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        } else {
-            preview.style.display = 'none';
-        }
-    });
-
     function validateField(input, fieldName, limit) {
         let errorMessageElement = document.getElementById(fieldName + '-error');
         if (!errorMessageElement) {
@@ -53,7 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
             input.parentNode.appendChild(errorMessageElement);
         }
 
-        if (input.value.length > limit) {
+        if (input.value.trim().length === 0) {
+            errorMessageElement.textContent = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required.`;
+            return false;
+        } else if (input.value.length > limit) {
             errorMessageElement.textContent = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} cannot exceed ${limit} characters.`;
             return false;
         } else {
