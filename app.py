@@ -140,6 +140,8 @@ def updateProfile():
                 cursor.execute(sql, values)
                 connection.commit()
 
+                return redirect("/user")
+
     return render_template("editProfile.html")
 
 

@@ -3,30 +3,48 @@
 {% block title %}Edit Profile{% endblock title %}
 
 {% block style %}
-
+<link rel="stylesheet" href="/static/style/editProfile.css">
 {% endblock style %}
 
 {% block content %}
-<form method="POST" enctype="multipart/form-data">
-    <div>
-        <label for="firstName">First Name</label>
-        <input id="firstName" name="firstName" value='{{ session["firstName"] }}'>
+<script src="/static/scripts/imagePreview.js"></script>
 
-        <label for="userName">Username</label>
-        <input id="userName" name="userName" value='{{ session["userName"] }}'>
+<div id="main-div">
+    <div class="border-gradient editprofile-section">
+        <form method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="name" class="roboto-bold">Name</label>
+                <input id="name" name="name" value='{{ session["name"] }}'>
+            </div>
+            <div>
+                <label for="userName" class="roboto-bold">Username</label>
+                <input id="userName" name="userName" value='{{ session["userName"] }}'>
+            </div>
+            <div>
+                <label for="email" class="roboto-bold">Email</label>
+                <input id="email" name="email" type="email" value='{{ session["email"] }}'>
+            </div>
 
-        <label for="email">email</label>
-        <input id="email" name="email" type="email" value='{{ session["email"] }}'>
+            {% if session["profilePicture"] %}
+            <div>
+                <h3>Old Profile Picture</h3>
+                <img src='{{session["profilePicture"]}}' alt="old profile picture" class="old-pfp">
+            </div>
+            {% endif %}
 
-        <!-- Display current profile picture if it exists -->
-        {% if session["profilePicture"] %}
-        <img src="{{ session['profilePicture'] }}" alt="Profile Picture" id="currentProfilePicture">
-        {% endif %}
-
-        <!-- File input for uploading a new profile picture -->
-        <label for="image">Profile Picture</label>
-        <input id="image" name="image" type="file" accept="image/*">
+            <div id="image-thing-div">
+                <h3 class="roboto-bold">New Profile Picture</h3>
+                <img id="image-preview" src="#" alt="Image Preview">
+                <div class="drop-area-wrapper">
+                    <div id="dropArea" class="drop-area">
+                        <p style="pointer-events: none;">Drag & Drop your image here or click to upload</p>
+                        <input id="fileInput" name="image" type="file" accept="image/*" class="file-input"
+                            style="background-color: red;" value='{{ session["profilePicture"] }}'>
+                    </div>
+                </div>
+            </div>
+            <button class="gradient-button roboto-bold">Update</button>
+        </form>
     </div>
-    <button>yippee</button>
-</form>
+</div>
 {% endblock content %}
