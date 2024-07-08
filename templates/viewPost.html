@@ -1,0 +1,19 @@
+{% extends "_layout.html" %}
+
+{% block title %}OneBit{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/style/viewPost.css">
+{% endblock style %}
+
+{% block content %}
+{{ post["title"] }}
+{{ post["description"] }}
+likes: {{ post["likes"] }}
+<img src='{{ post["image"] }}'>
+{% for comment in comments %}
+{{ comment["comment"] }}
+<br>
+{% endfor %}
+<a href='/post/comment?postID={{post["postID"]}}&comment=braz'>add comment</a>
+{% endblock content%}

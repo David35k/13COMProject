@@ -340,5 +340,44 @@ def editPost():
 
                 return render_template("editPost.html", post=post, tagString=tagString)
 
+# actually lets the user view the post in a full page, leave comments and other stuff
+@app.route("/post/view")
+def viewPost():
+    if(request.method == "GET"):
+        postID = request.args["postID"]
+
+        if (not postID):
+            flash("That post doesn't exist")
+            return redirect("/home")
+
+        with create_connection() as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT * FROM posts WHERE postID = %s", postID)
+                    post = cursor.fetchone()
+
+                    cursor.execute("SELECT * FROM comments WHERE postID = %s ORDER BY time DESC ", postID)
+                    comments = cursor.fetchall()
+
+                    return render_template("viewPost.html", post=post, comments=comments)
+
+# epic commenting route
+@app.route("/post/comment")
+def comment():
+    postID = request.args["postID"]
+    comment = request.args["comment"]
+
+    if (not postID):
+        flash("That post doesn't exist")
+        return redirect("/home")
+
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO comments (postID, comment) VALUES (%s, %s)", (postID, comment))
+            connection.commit()
+
+    link = "/post/view?postID=" + str(postID)
+
+    return redirect(link)
+
 
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server
