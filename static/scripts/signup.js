@@ -11,17 +11,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     fields.forEach(field => {
         const input = document.getElementById(field);
-        input.addEventListener('input', function () {
-            validateField(input, field, limits[field]);
-        });
+        if (input) {
+            input.addEventListener('input', function () {
+                validateField(input, field, limits[field]);
+            });
+        }
     });
 
     form.addEventListener('submit', function (event) {
         let valid = true;
         fields.forEach(field => {
             const input = document.getElementById(field);
-            if (!validateField(input, field, limits[field])) {
-                valid = false;
+            if (input) {
+                if (!validateField(input, field, limits[field])) {
+                    valid = false;
+                }
             }
         });
 

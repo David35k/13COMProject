@@ -87,7 +87,14 @@ form>div {
     margin-bottom: 20px;
 }
 
-form>button {
+#clearButton {
+    font-size: 20px;
+    padding: 6px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+#submitButton {
     font-size: 30px;
     padding: 10px 20px;
     margin: 10px;

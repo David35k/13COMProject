@@ -145,6 +145,12 @@ nav a:hover {
     background: linear-gradient(120deg, #0F62FE, #15B4E7);
     color: white;
     border: none;
+    transition: filter 0.2s ease;
+    filter: none;
+}
+
+.gradient-button:hover {
+    filter: brightness(120%)
 }
 
 .action-button {
