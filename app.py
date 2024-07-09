@@ -341,7 +341,7 @@ def editPost():
                 return render_template("editPost.html", post=post, tagString=tagString)
 
 # actually lets the user view the post in a full page, leave comments and other stuff
-@app.route("/post/view")
+@app.route("/post/view", methods = ["GET", "POST"])
 def viewPost():
     if(request.method == "GET"):
         postID = request.args["postID"]
@@ -355,10 +355,17 @@ def viewPost():
                     cursor.execute("SELECT * FROM posts WHERE postID = %s", postID)
                     post = cursor.fetchone()
 
-                    cursor.execute("SELECT * FROM comments WHERE postID = %s ORDER BY time DESC ", postID)
+                    cursor.execute("SELECT * FROM comments JOIN users ON comments.userID = users.userID WHERE postID = %s ORDER BY time DESC ", postID)
                     comments = cursor.fetchall()
 
                     return render_template("viewPost.html", post=post, comments=comments)
+    elif (request.method == "POST"):
+        postID = request.args["postID"]
+        comment = request.form["comment"]
+
+        link = '/post/comment?postID=' + str(postID) + '&comment=' + comment
+
+        return redirect(link)
 
 # epic commenting route
 @app.route("/post/comment")
@@ -367,12 +374,11 @@ def comment():
     comment = request.args["comment"]
 
     if (not postID):
-        flash("That post doesn't exist")
         return redirect("/home")
 
     with create_connection() as connection:
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO comments (postID, comment) VALUES (%s, %s)", (postID, comment))
+            cursor.execute("INSERT INTO comments (postID, comment, userID) VALUES (%s, %s, %s)", (postID, comment, session["userID"]))
             connection.commit()
 
     link = "/post/view?postID=" + str(postID)

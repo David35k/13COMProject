@@ -7,13 +7,26 @@
 {% endblock style %}
 
 {% block content %}
-{{ post["title"] }}
-{{ post["description"] }}
-likes: {{ post["likes"] }}
-<img src='{{ post["image"] }}'>
-{% for comment in comments %}
-{{ comment["comment"] }}
-<br>
-{% endfor %}
-<a href='/post/comment?postID={{post["postID"]}}&comment=braz'>add comment</a>
+<div id="main-div">
+    <div class="post-section border-gradient">
+        <div class="post-title">{{ post["title"] }}</div>
+        <div class="post-description">{{ post["description"] }}</div>
+        <div class="post-likes">Likes: {{ post["likes"] }}</div>
+        <img class="post-image" src='{{ post["image"] }}' alt="Post Image">
+
+        <form id="comment-form" method="post" class="comment-form">
+            <label for="comment">Comment on this post:</label>
+            <textarea id="comment" name="comment" type="text"></textarea>
+            <button type="submit" class="button-gradient">Comment</button>
+        </form>
+
+        {% for comment in comments %}
+        <div class="comment">
+            <div class="comment-time">{{ comment["time"] }}</div>
+            <div class="comment-user roboto-bold">{{ comment["userName"] }}</div>
+            <div class="comment-text">{{ comment["comment"] }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content%}
