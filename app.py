@@ -168,7 +168,6 @@ def home():
 
                 # this is the default
                 if(not "sortby" in request.args):
-                    print("ohio")
                     return redirect("/home?sortby=recent")
                 
                     # Base SQL query
@@ -204,9 +203,6 @@ def home():
                         if like["userID"] == session["userID"] and post["postID"] == like["postID"]:
                             # do if the user liked the post:
                             likeArr.append(post["postID"])
-
-
-                print(likeArr)
 
     return render_template("home.html", posts=posts, tags=tags, likes=likes, likeArr=likeArr, sortby=request.args["sortby"])
 
@@ -336,8 +332,6 @@ def editPost():
 
                 tagString = tagString[:-1]
 
-                print(tagString)
-
                 return render_template("editPost.html", post=post, tagString=tagString)
 
 # actually lets the user view the post in a full page, leave comments and other stuff
@@ -358,7 +352,12 @@ def viewPost():
                     cursor.execute("SELECT * FROM comments JOIN users ON comments.userID = users.userID WHERE postID = %s ORDER BY time DESC ", postID)
                     comments = cursor.fetchall()
 
-                    return render_template("viewPost.html", post=post, comments=comments)
+                    counter = 0
+
+                    for comment in comments:
+                        counter += 1
+
+                    return render_template("viewPost.html", post=post, comments=comments, commentCount=counter)
     elif (request.method == "POST"):
         postID = request.args["postID"]
         comment = request.form["comment"]

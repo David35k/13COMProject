@@ -7,26 +7,29 @@
 {% endblock style %}
 
 {% block content %}
+<script src="/static/scripts/viewPost.js"></script>
 <div id="main-div">
     <div class="post-section border-gradient">
         <div class="post-title">{{ post["title"] }}</div>
         <div class="post-description">{{ post["description"] }}</div>
-        <div class="post-likes">Likes: {{ post["likes"] }}</div>
+        <div style="display: flex; flex-direction: row; justify-content: center; gap:20px;">
+            <div class="post-likes">Likes: {{ post["likes"] }}</div>
+            <div class="post-likes">Comments: {{ commentCount }}</div>
+        </div>
         <img class="post-image" src='{{ post["image"] }}' alt="Post Image">
 
         <form id="comment-form" method="post" class="comment-form">
             <label for="comment">Comment on this post:</label>
-            <textarea id="comment" name="comment" type="text"></textarea>
-            <button type="submit" class="button-gradient">Comment</button>
+            <textarea id="comment" name="comment" type="text" rows="5" cols="50"></textarea>
+            <button type="submit" class="gradient-button">Comment</button>
         </form>
 
         {% for comment in comments %}
         <div class="comment">
-            <div class="comment-time">{{ comment["time"] }}</div>
-            <div class="comment-user roboto-bold">{{ comment["userName"] }}</div>
+            <div class="comment-info">{{ comment["userName"] }} @ {{ comment["time"] }}</div>
             <div class="comment-text">{{ comment["comment"] }}</div>
         </div>
         {% endfor %}
     </div>
 </div>
-{% endblock content%}
+{% endblock content %}
