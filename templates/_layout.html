@@ -46,13 +46,29 @@
 
         </nav>
 
+        {% if "loggedIn" in session %}
+        <a href="/home" style="color: white; text-decoration: none;">
+            <h1 class="roboto-black">OneBit</h1>
+        </a>
+        {% else %}
         <a href="/" style="color: white; text-decoration: none;">
             <h1 class="roboto-black">OneBit</h1>
         </a>
+        {% endif %}
+
     </div>
     <div>
         {% block content %}
         {% endblock content%}
+    </div>
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="background-gradient-inverted flash-message">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
     </div>
 </body>
 

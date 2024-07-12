@@ -126,7 +126,8 @@ def updateProfile():
                 if(not request.files["image"]):
                     imagePath = session["profilePicture"]
                 else:
-                    deleteFile(session["profilePicture"])
+                    if(session["profilePicture"]):
+                        deleteFile(session["profilePicture"])
                     imagePath = saveFile(request.files["image"], "static/images/profilePictures/")
 
                 values = (request.form["name"], request.form["userName"], request.form["email"], imagePath, session["userID"])
@@ -165,6 +166,11 @@ def userPosts():
 def home():
     with create_connection() as connection:
             with connection.cursor() as cursor:
+
+                # make user is logged in
+                if (not "loggedIn" in session):
+                    flash("You need to be logged in to browse OneBit")
+                    return redirect("/user/login")
 
                 # this is the default
                 if(not "sortby" in request.args):
@@ -298,7 +304,8 @@ def editPost():
                 if(not request.files["image"]):
                     imagePath = post["image"]
                 else:
-                    deleteFile(post["image"])
+                    if(post["image"]):
+                        deleteFile(post["image"])
                     imagePath = saveFile(request.files["image"], "static/images/postImages/")
 
                 sql = "UPDATE posts SET title= %s, image = %s, description = %s WHERE postID = %s"

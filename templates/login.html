@@ -19,20 +19,9 @@
                 <input id="password" name="password" type="password">
             </div>
             <button class="gradient-button button-thing roboto-bold">LOG IN</button>
+            <p style="text-align: center; font-size: 15px;">Don't have an account? <a href="/user/signup">Create an
+                    account</a></p>
         </form>
     </div>
 </div>
-
-
-
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul class=flashes>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-
 {% endblock content %}
