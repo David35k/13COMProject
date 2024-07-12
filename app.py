@@ -55,7 +55,6 @@ def profile():
                     likeCount += int(post["likes"])
 
     return render_template("profile.html", postNum = len(posts), likeCount = likeCount)
-    
 
 # lets a user create an account and inserts them into the database
 @app.route("/user/signup", methods=["GET", "POST"])
@@ -102,7 +101,7 @@ def login():
             else:
                 flash("wrong password for username " + result["userName"])
         else:
-            flash("no user with username " + request.form["userName"])
+            flash("no user with the username: " + request.form["userName"])
     
     return render_template("login.html")
 
@@ -176,12 +175,22 @@ def home():
                 if(not "sortby" in request.args):
                     return redirect("/home?sortby=recent")
                 
-                    # Base SQL query
+                # Base SQL query
                 sql = "SELECT * FROM posts"
 
                 # Check if search parameter is provided
                 if "search" in request.form and request.form["search"]:
                     sql += " WHERE title LIKE '%" + request.form["search"] + "%'"
+                    sql += " OR description LIKE '%" + request.form["search"] + "%'"
+
+                    # get all related tags
+                    thing = "SELECT * FROM tags WHERE tag LIKE '%" + request.form["search"] + "%'"
+                    cursor.execute(thing)
+                    tags = cursor.fetchall()
+
+                    if tags:
+                        idString = "(" + ",".join([str(tag["postID"]) for tag in tags]) + ")"
+                        sql += " OR postID IN " + idString
 
                 # Check for sorting parameter
                 if "sortby" in request.args:
@@ -244,7 +253,6 @@ def like():
             with connection.cursor() as cursor:
                 postID = request.args.get("postID")
                 alreadyLiked = False;
-
 
                 # check if the user already liked the post
                 sql = "SELECT userID FROM likes WHERE postID = %s"
@@ -351,6 +359,16 @@ def viewPost():
             flash("That post doesn't exist")
             return redirect("/home")
 
+        # get the postID of the latest post
+        with create_connection() as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT postID FROM posts ORDER BY time DESC")
+                    latestPostID = cursor.fetchone()["postID"]
+
+                    if (int(postID) > int(latestPostID)):
+                        flash("That post doesn't exist")
+                        return redirect("/home")
+
         with create_connection() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute("SELECT * FROM posts WHERE postID = %s", postID)
@@ -390,6 +408,5 @@ def comment():
     link = "/post/view?postID=" + str(postID)
 
     return redirect(link)
-
 
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server
