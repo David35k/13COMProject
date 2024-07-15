@@ -54,7 +54,10 @@ def profile():
                 for post in posts:
                     likeCount += int(post["likes"])
 
-    return render_template("profile.html", postNum = len(posts), likeCount = likeCount)
+                cursor.execute("SELECT * FROM comments WHERE userID = %s", session["userID"])
+                comments = cursor.fetchall()
+
+    return render_template("profile.html", postNum = len(posts), likeCount = likeCount, commentNum=len(comments))
 
 # lets a user create an account and inserts them into the database
 @app.route("/user/signup", methods=["GET", "POST"])
@@ -331,6 +334,7 @@ def editPost():
 
                 connection.commit()
 
+                flash("Post updated!")
                 return redirect("/user/posts")
     else:
         with create_connection() as connection:

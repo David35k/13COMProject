@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Validate file input (image)
 
-        if (fileInput.files.length === 0) {
+        if (fileInput.files.length === 0 && !form.classList.contains("epic")) {
             let errorMessageElement = document.getElementById('fileInput-error');
             if (!errorMessageElement) {
                 errorMessageElement = document.createElement('div');
@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 errorMessageElement.className = 'error-message';
                 fileInput.parentNode.appendChild(errorMessageElement);
                 errorMessageElement.textContent = 'Image is required.';
-
             }
 
             valid = false;

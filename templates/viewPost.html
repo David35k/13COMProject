@@ -10,8 +10,10 @@
 <script src="/static/scripts/viewPost.js"></script>
 <div id="main-div">
     <div class="post-section border-gradient">
-        <div class="post-title">{{ post["title"] }}</div>
-        <div class="post-description">{{ post["description"] }}</div>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="post-title">{{ post["title"] }}</div>
+            <div class="post-description">{{ post["description"] }}</div>
+        </div>
         <div style="display: flex; flex-direction: row; justify-content: center; gap:20px;">
             <div class="post-likes">Likes: {{ post["likes"] }}</div>
             <div class="post-likes">Comments: {{ commentCount }}</div>
@@ -24,12 +26,14 @@
             <button type="submit" class="gradient-button">Comment</button>
         </form>
 
-        {% for comment in comments %}
-        <div class="comment">
-            <div class="comment-info">{{ comment["userName"] }} @ {{ comment["time"] }}</div>
-            <div class="comment-text">{{ comment["comment"] }}</div>
+        <div class="comments">
+            {% for comment in comments %}
+            <div class="comment">
+                <div class="comment-info">{{ comment["userName"] }} @ {{ comment["time"] }}</div>
+                <div class="comment-text">{{ comment["comment"] }}</div>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock content %}
