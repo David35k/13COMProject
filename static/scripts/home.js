@@ -10,3 +10,16 @@ $(document).ready(function () {
         });
     });
 });
+
+function copyFunc(postID) {
+    var copyText = "/post/view?postID=" + postID;
+    navigator.clipboard.writeText(copyText);
+
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copied: " + copyText;
+}
+
+function outFunc() {
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copy post link";
+}
