@@ -12,10 +12,10 @@ $(document).ready(function () {
 });
 
 function copyFunc(postID) {
-    var copyText = "/post/view?postID=" + postID;
+    var copyText = "localhost:5000/post/view?postID=" + postID;
     navigator.clipboard.writeText(copyText);
 
-    var tooltip = document.getElementById("myTooltip");
+    var tooltip = document.getElementById("myTooltip" + postID);
     tooltip.innerHTML = "Copied: " + copyText;
 }
 

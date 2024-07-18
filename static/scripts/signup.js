@@ -20,6 +20,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (event) {
         let valid = true;
+
+        const fileInput = document.getElementById('fileInput');
+
+        if (fileInput.files.length === 0 && !form.classList.contains("epic")) {
+            let errorMessageElement = document.getElementById('fileInput-error');
+            if (!errorMessageElement) {
+                errorMessageElement = document.createElement('div');
+                errorMessageElement.id = 'fileInput-error';
+                errorMessageElement.className = 'error-message';
+                fileInput.parentNode.appendChild(errorMessageElement);
+                errorMessageElement.textContent = 'Image is required.';
+            }
+
+            valid = false;
+        }
+
         fields.forEach(field => {
             const input = document.getElementById(field);
             if (input) {

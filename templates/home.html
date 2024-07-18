@@ -53,11 +53,8 @@
                         <a href='/post/view?postID={{post["postID"]}}#comment'><img
                                 src="/static/images/websiteImages/commentThing.png" width="40px"></a>
                         <div class="tooltip">
-                            <p class="tooltip-text"></p>
-                        </div>
-                        <div class="tooltip">
                             <a onclick='copyFunc( {{post["postID"]}} )' onmouseout="outFunc()">
-                                <span class="tooltiptext" id="myTooltip">Copy post link</span>
+                                <span class="tooltiptext" id='myTooltip{{post["postID"]}}'>Copy post link</span>
                                 <img src="/static/images/websiteImages/shareThing.png" width="40px">
                             </a>
                         </div>

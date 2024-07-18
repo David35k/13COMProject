@@ -378,7 +378,7 @@ def viewPost():
                     cursor.execute("SELECT * FROM posts WHERE postID = %s", postID)
                     post = cursor.fetchone()
 
-                    cursor.execute("SELECT * FROM comments JOIN users ON comments.userID = users.userID WHERE postID = %s ORDER BY time DESC ", postID)
+                    cursor.execute("SELECT * FROM comments JOIN users ON comments.userID = users.userID WHERE postID = %s ORDER BY time DESC", postID)
                     comments = cursor.fetchall()
 
                     counter = 0

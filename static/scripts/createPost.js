@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const form = document.getElementById('form');
     const fields = ['title', 'description'];
-    const fileInput = document.getElementById('fileInput');
+
 
     fields.forEach(field => {
         const input = document.getElementById(field);
