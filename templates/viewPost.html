@@ -35,6 +35,16 @@
                 <div>
                     <div class="comment-info">{{ comment["userName"] }} @ {{ comment["time"] }}</div>
                     <div class="comment-text">{{ comment["comment"] }}</div>
+                    <div>
+                        <button class="like-button" id='{{comment["commentID"]}}'>
+                            {% if comment["commentID"] in likeArr %}
+                            <div class="heart"></div>
+                            {% else %}
+                            <div class="heart heart-hollow"></div>
+                            {% endif %}
+                        </button>
+                        <p class='{{ comment["commentID"] }} like-text'>{{ comment["likes"] }}</p>
+                    </div>
                 </div>
             </div>
 

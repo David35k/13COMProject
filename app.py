@@ -378,15 +378,35 @@ def viewPost():
                     cursor.execute("SELECT * FROM posts WHERE postID = %s", postID)
                     post = cursor.fetchone()
 
+                    # Check for sorting parameter
+                    # if "sortby" in request.args:
+                    #     if request.args["sortby"] == "recent":
+                    #         sql += " ORDER BY time DESC"
+                    #     elif request.args["sortby"] == "likes":
+                    #         sql += " ORDER BY likes DESC"
+                    #     elif request.args["sortby"] == "oldest":
+                    #         sql += " ORDER BY time ASC"
+
                     cursor.execute("SELECT * FROM comments JOIN users ON comments.userID = users.userID WHERE postID = %s ORDER BY time DESC", postID)
                     comments = cursor.fetchall()
+
+                    cursor.execute("SELECT * FROM commentLikes WHERE userID = %s", session["userID"])
+                    likes = cursor.fetchall()
 
                     counter = 0
 
                     for comment in comments:
                         counter += 1
 
-                    return render_template("viewPost.html", post=post, comments=comments, commentCount=counter)
+                    likeArr = []
+
+                    for comment in comments:
+                        for like in likes:
+                            if like["userID"] == session["userID"] and comment["commentID"] == like["commentID"]:
+                                # do if the user liked the comment:
+                                likeArr.append(comment["commentID"])
+
+                    return render_template("viewPost.html", post=post, comments=comments, commentCount=counter, likeArr=likeArr)
     elif (request.method == "POST"):
         postID = request.args["postID"]
         comment = request.form["comment"]
@@ -413,4 +433,44 @@ def comment():
 
     return redirect(link)
 
+
+@app.route("/comment/like")
+def likeComment():
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            commentID = request.args.get("commentID")
+            alreadyLiked = False;
+
+            # check if the user already liked the post
+            sql = "SELECT * FROM commentLikes WHERE commentID = %s"
+            cursor.execute(sql, commentID)
+            results = cursor.fetchall()
+
+            for result in results:
+                if result["userID"] == session["userID"]:
+                    # there is a match so it should "unlike"
+                    alreadyLiked = True;
+                    
+            if alreadyLiked:
+                sql = "DELETE FROM commentLikes where userID = %s AND commentID = %s"
+                values = (session["userID"], commentID)
+                cursor.execute(sql, values)
+
+                sql = "UPDATE comments SET likes = likes - 1 WHERE commentID = %s"
+            else:
+                # add a new like
+                sql = "INSERT INTO commentLikes (userID, commentID) VALUES (%s, %s)"
+                values = (session["userID"], commentID)
+                cursor.execute(sql, values)
+
+                sql = "UPDATE comments SET likes = likes + 1 WHERE commentID = %s"
+
+            cursor.execute(sql, commentID)
+            connection.commit()
+
+            cursor.execute("SELECT likes FROM comments WHERE commentID = %s", commentID)
+            result = cursor.fetchone()
+
+            return str(result["likes"])
+            
 app.run(debug=True, host="0.0.0.0") # the host bit allows any computer on the network to access the flask server
