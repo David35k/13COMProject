@@ -26,16 +26,26 @@
             <button type="submit" class="gradient-button">Comment</button>
         </form>
 
+        <div id="sort-div" style="text-align: center; margin-top: 30px;">
+            <div class="dropdown">
+                <a class="roboto-bold">sort by: {{ sortby }}</a>
+                <div class="dropdown-content">
+                    <a class="dropdown-link"
+                        href='/post/view?postID={{ post["postID"] }}&sortby=recent#comment'>recent</a>
+                    <a class="dropdown-link"
+                        href='/post/view?postID={{ post["postID"] }}&sortby=likes#comment'>likes</a>
+                    <a class="dropdown-link"
+                        href='/post/view?postID={{ post["postID"] }}&sortby=oldest#comment'>oldest</a>
+                </div>
+            </div>
+
+        </div>
         <div class="comments">
             {% for comment in comments %}
             <div class="comment">
                 <div>
                     <img src='{{comment["image"]}}' class="commentPFP">
-                </div>
-                <div>
-                    <div class="comment-info">{{ comment["userName"] }} @ {{ comment["time"] }}</div>
-                    <div class="comment-text">{{ comment["comment"] }}</div>
-                    <div>
+                    <div class="like-thing-bruh">
                         <button class="like-button" id='{{comment["commentID"]}}'>
                             {% if comment["commentID"] in likeArr %}
                             <div class="heart"></div>
@@ -43,8 +53,17 @@
                             <div class="heart heart-hollow"></div>
                             {% endif %}
                         </button>
+                        {% if comment["likes"] == None %}
+                        <p class='{{ comment["commentID"] }} like-text'>0</p>
+                        {% else %}
                         <p class='{{ comment["commentID"] }} like-text'>{{ comment["likes"] }}</p>
+                        {% endif %}
+
                     </div>
+                </div>
+                <div>
+                    <div class="comment-info">{{ comment["userName"] }} @ {{ comment["time"] }}</div>
+                    <div class="comment-text">{{ comment["comment"] }}</div>
                 </div>
             </div>
 

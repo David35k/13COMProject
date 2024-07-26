@@ -57,6 +57,9 @@ def profile():
                 cursor.execute("SELECT * FROM comments WHERE userID = %s", session["userID"])
                 comments = cursor.fetchall()
 
+                for comment in comments:
+                    likeCount += int(comment["likes"])
+
     return render_template("profile.html", postNum = len(posts), likeCount = likeCount, commentNum=len(comments))
 
 # lets a user create an account and inserts them into the database
@@ -169,7 +172,7 @@ def home():
     with create_connection() as connection:
             with connection.cursor() as cursor:
 
-                # make user is logged in
+                # make sure user is logged in
                 if (not "loggedIn" in session):
                     flash("You need to be logged in to browse OneBit")
                     return redirect("/user/login")
@@ -195,14 +198,15 @@ def home():
                         idString = "(" + ",".join([str(tag["postID"]) for tag in tags]) + ")"
                         sql += " OR postID IN " + idString
 
-                # Check for sorting parameter
-                if "sortby" in request.args:
-                    if request.args["sortby"] == "recent":
-                        sql += " ORDER BY time DESC"
-                    elif request.args["sortby"] == "likes":
-                        sql += " ORDER BY likes DESC"
-                    elif request.args["sortby"] == "oldest":
-                        sql += " ORDER BY time ASC"
+                if request.args["sortby"] == "recent":
+                    sql += " ORDER BY time DESC"
+                elif request.args["sortby"] == "likes":
+                    sql += " ORDER BY likes DESC"
+                elif request.args["sortby"] == "oldest":
+                    sql += " ORDER BY time ASC"
+                else:
+                    flash("That's not a valid sortby argument mate :)")
+                    return redirect("/home?sortby=recent")
                         
                 cursor.execute(sql)
 
@@ -356,6 +360,11 @@ def editPost():
 # actually lets the user view the post in a full page, leave comments and other stuff
 @app.route("/post/view", methods = ["GET", "POST"])
 def viewPost():
+    # make sure user is logged in
+    if (not "loggedIn" in session):
+        flash("You need to be logged in to browse OneBit")
+        return redirect("/user/login")
+
     if(request.method == "GET"):
         postID = request.args["postID"]
 
@@ -372,23 +381,29 @@ def viewPost():
                     if (int(postID) > int(latestPostID)):
                         flash("That post doesn't exist")
                         return redirect("/home")
+                    
+                    # this is the default
+                    if(not "sortby" in request.args):
+                        return redirect("/post/view?postID=" + postID + "&sortby=recent")
+                    
+                    # Base SQL query
+                    sql = "SELECT * FROM comments JOIN users ON comments.userID = users.userID WHERE postID = " + str(postID)
 
-        with create_connection() as connection:
-                with connection.cursor() as cursor:
+                    if request.args["sortby"] == "recent":
+                        sql += " ORDER BY time DESC"
+                    elif request.args["sortby"] == "likes":
+                        sql += " ORDER BY likes DESC"
+                    elif request.args["sortby"] == "oldest":
+                        sql += " ORDER BY time ASC"
+                    else:
+                        flash("That's not a valid sortby argument mate :)")
+                        return redirect("/post/view?postID=" + postID + "&sortby=recent")
+
+                    cursor.execute(sql)
+                    comments = cursor.fetchall()
+
                     cursor.execute("SELECT * FROM posts WHERE postID = %s", postID)
                     post = cursor.fetchone()
-
-                    # Check for sorting parameter
-                    # if "sortby" in request.args:
-                    #     if request.args["sortby"] == "recent":
-                    #         sql += " ORDER BY time DESC"
-                    #     elif request.args["sortby"] == "likes":
-                    #         sql += " ORDER BY likes DESC"
-                    #     elif request.args["sortby"] == "oldest":
-                    #         sql += " ORDER BY time ASC"
-
-                    cursor.execute("SELECT * FROM comments JOIN users ON comments.userID = users.userID WHERE postID = %s ORDER BY time DESC", postID)
-                    comments = cursor.fetchall()
 
                     cursor.execute("SELECT * FROM commentLikes WHERE userID = %s", session["userID"])
                     likes = cursor.fetchall()
@@ -406,7 +421,8 @@ def viewPost():
                                 # do if the user liked the comment:
                                 likeArr.append(comment["commentID"])
 
-                    return render_template("viewPost.html", post=post, comments=comments, commentCount=counter, likeArr=likeArr)
+                    return render_template("viewPost.html", post=post, comments=comments, commentCount=counter, likeArr=likeArr, sortby=request.args["sortby"])
+
     elif (request.method == "POST"):
         postID = request.args["postID"]
         comment = request.form["comment"]

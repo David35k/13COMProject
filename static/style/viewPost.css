@@ -95,10 +95,10 @@
 .heart:after {
     position: absolute;
     content: "";
-    left: 20px;
+    left: 15px;
     top: 0;
-    width: 20px;
-    height: 32px;
+    width: 15px;
+    height: 24px;
     background: #15B4E7;
     border-radius: 20px 20px 0 0;
     transform: rotate(-45deg);
@@ -126,7 +126,12 @@
 }
 
 .like-text {
-    margin-top: -50px;
-    text-align: center;
-    margin-left: 10px;
+    margin-top: -65px;
+}
+
+.like-thing-bruh {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
 }
