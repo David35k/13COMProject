@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, flash, redirect
+from flask import Flask, render_template, request, session, flash, redirect, make_response, jsonify
 import pymysql
 import hashlib
 import uuid
@@ -68,16 +68,60 @@ def signup():
     if request.method == "POST":
         with create_connection() as connection:
             with connection.cursor() as cursor:
-                sql = """INSERT INTO users (name, userName, email, password, image)
-                        VALUES (%s, %s, %s, %s, %s);
-                """
-                values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "static/images/profilePictures/"))
-                cursor.execute(sql, values)
-                connection.commit()
+                # check if the username and/or email are taken
+                cursor.execute("SELECT * FROM users;")
+                users = cursor.fetchall()
 
-                return redirect("login")
-    
-    return render_template("signup.html")
+                canSubmit = True
+
+                for user in users:
+                    if user["userName"] == request.form["userName"]:
+                        flash("That username is already taken :( (try adding some numbers and stuff :) )")
+                        canSubmit = False
+                        break
+
+                for user in users:
+                    if user["email"] == request.form["email"]:
+                        canSubmit = False
+                        flash("An account with that email already exists!?!? What exactly are you trying to do mate 🧐🤔")
+                        break
+
+                if canSubmit:
+                    sql = """INSERT INTO users (name, userName, email, password, image)
+                            VALUES (%s, %s, %s, %s, %s);
+                    """
+                    values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "static/images/profilePictures/"))
+                    cursor.execute(sql, values)
+                    connection.commit()
+
+                    flash("Successfully created account!")
+                    return redirect("login")
+                else:
+                    return redirect("/user/signup")
+    elif request.method == "GET":
+        return render_template("signup.html")
+
+
+@app.route('/check_field', methods=['POST'])
+def check_field():
+    data = request.json
+    field_name = data['field']
+    field_value = data['value']
+
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            if field_name == 'userName':
+                cursor.execute("SELECT * FROM users WHERE userName = %s", (field_value,))
+            elif field_name == 'email':
+                cursor.execute("SELECT * FROM users WHERE email = %s", (field_value,))
+            
+            result = cursor.fetchone()
+
+            if result:
+
+                return jsonify({'exists': True})
+            else:
+                return jsonify({'exists': False})
 
 # logs an already existing user in
 @app.route("/user/login", methods=["GET", "POST"])
@@ -102,7 +146,7 @@ def login():
                 session["userID"] = result["userID"]
                 session["profilePicture"] = result["image"]
 
-                flash("login successful!")
+                flash("You have entered OneBit B)")
                 return redirect("/home")
             else:
                 flash("wrong password for username " + result["userName"])
@@ -115,7 +159,7 @@ def login():
 @app.route("/user/logout")
 def logout():
     session.clear()
-    flash("logged out")
+    flash("Peace out ✌️")
     return redirect("/user/login")
 
 # lets the user update their profile
@@ -142,10 +186,10 @@ def updateProfile():
                 session["email"] = request.form["email"]
                 session["profilePicture"] = imagePath
 
-                # TODO: make it so that it deletes the old image
                 cursor.execute(sql, values)
                 connection.commit()
 
+                flash("Profile updated. Looking good!")
                 return redirect("/user")
 
     return render_template("editProfile.html")
@@ -306,6 +350,7 @@ def deletePost():
 
             deleteFile(post["image"])
             
+            flash("Post deleted. Hope you didn't do that on accident!")
             return redirect("/user/posts")
 
 @app.route("/post/edit", methods = ["GET", "POST"])
@@ -438,6 +483,7 @@ def comment():
     comment = request.args["comment"]
 
     if (not postID):
+        flash("postID wasn't given!")
         return redirect("/home")
 
     with create_connection() as connection:

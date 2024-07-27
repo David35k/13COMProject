@@ -38,28 +38,27 @@
                         href='/post/view?postID={{ post["postID"] }}&sortby=oldest#comment'>oldest</a>
                 </div>
             </div>
-
         </div>
         <div class="comments">
             {% for comment in comments %}
             <div class="comment">
+                <div class="like-thing-bruh">
+                    <button class="like-button" id='{{comment["commentID"]}}'>
+                        {% if comment["commentID"] in likeArr %}
+                        <div class="heart"></div>
+                        {% else %}
+                        <div class="heart heart-hollow"></div>
+                        {% endif %}
+                    </button>
+                    {% if comment["likes"] == None %}
+                    <p class='{{ comment["commentID"] }} like-text'>0</p>
+                    {% else %}
+                    <p class='{{ comment["commentID"] }} like-text'>{{ comment["likes"] }}</p>
+                    {% endif %}
+
+                </div>
                 <div>
                     <img src='{{comment["image"]}}' class="commentPFP">
-                    <div class="like-thing-bruh">
-                        <button class="like-button" id='{{comment["commentID"]}}'>
-                            {% if comment["commentID"] in likeArr %}
-                            <div class="heart"></div>
-                            {% else %}
-                            <div class="heart heart-hollow"></div>
-                            {% endif %}
-                        </button>
-                        {% if comment["likes"] == None %}
-                        <p class='{{ comment["commentID"] }} like-text'>0</p>
-                        {% else %}
-                        <p class='{{ comment["commentID"] }} like-text'>{{ comment["likes"] }}</p>
-                        {% endif %}
-
-                    </div>
                 </div>
                 <div>
                     <div class="comment-info">{{ comment["userName"] }} @ {{ comment["time"] }}</div>

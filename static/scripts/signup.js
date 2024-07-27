@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const fileInput = document.getElementById('fileInput');
 
-        if (fileInput.files.length === 0 && !form.classList.contains("epic")) {
+        if (fileInput.files.length === 0 && form.classList.contains("epic")) {
             let errorMessageElement = document.getElementById('fileInput-error');
             if (!errorMessageElement) {
                 errorMessageElement = document.createElement('div');
@@ -90,7 +90,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        if (fieldName === 'userName' || fieldName === 'email') {
+            checkFieldInDatabase(fieldName, input.value, function (exists) {
+                if (exists) {
+                    isValid = false;
+                    errorMessage = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is already taken.`;
+                }
+                document.getElementById(fieldName + '-error').textContent = isValid ? '' : errorMessage;
+            });
+        }
+
         document.getElementById(fieldName + '-error').textContent = isValid ? '' : errorMessage;
         return isValid;
+    }
+
+    function checkFieldInDatabase(field, value, callback) {
+        fetch('/check_field', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ field: field, value: value })
+        })
+            .then(response => response.json())
+            .then(data => {
+                callback(data.exists);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                callback(false);
+            });
     }
 });

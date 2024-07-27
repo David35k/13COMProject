@@ -230,7 +230,7 @@ nav a:hover {
     margin: 5px;
     border-radius: 7px;
     opacity: 0.9;
-    animation: fadeOut 2.5s forwards;
+    animation: fadeOut 3.5s forwards;
     /* Duration of 2.5s: 2s delay + 0.5s fade out */
     animation-delay: 2s;
     /* 2s delay before starting the fade out */
