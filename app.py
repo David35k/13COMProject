@@ -223,6 +223,7 @@ def home():
 
                 # this is the default
                 if(not "sortby" in request.args):
+                    flash("Sortby argument not found!")
                     return redirect("/home?sortby=recent")
                 
                 # Base SQL query
