@@ -470,32 +470,20 @@ def viewPost():
                     return render_template("viewPost.html", post=post, comments=comments, commentCount=counter, likeArr=likeArr, sortby=request.args["sortby"])
 
     elif (request.method == "POST"):
-        postID = request.args["postID"]
-        comment = request.form["comment"]
+        postID = request.form.get("postID")
+        comment = request.form.get("comment")
 
-        link = '/post/comment?postID=' + str(postID) + '&comment=' + comment
+        if not postID:
+            flash("postID wasn't given!")
+            return redirect("/home")
 
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO comments (postID, comment, userID) VALUES (%s, %s, %s)", (postID, comment, session["userID"]))
+                connection.commit()
+
+        link = "/post/view?postID=" + str(postID)
         return redirect(link)
-
-# epic commenting route
-@app.route("/post/comment")
-def comment():
-    postID = request.args["postID"]
-    comment = request.args["comment"]
-
-    if (not postID):
-        flash("postID wasn't given!")
-        return redirect("/home")
-
-    with create_connection() as connection:
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO comments (postID, comment, userID) VALUES (%s, %s, %s)", (postID, comment, session["userID"]))
-            connection.commit()
-
-    link = "/post/view?postID=" + str(postID)
-
-    return redirect(link)
-
 
 @app.route("/comment/like")
 def likeComment():

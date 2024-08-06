@@ -23,6 +23,7 @@
         <form id="comment-form" method="post" class="comment-form">
             <label for="comment" id="comment-label">Comment on this post:</label>
             <textarea id="comment" name="comment" type="text" rows="5" cols="50"></textarea>
+            <input type="hidden" name="postID" value="{{ post['postID'] }}">
             <button type="submit" class="gradient-button">Comment</button>
         </form>
 
