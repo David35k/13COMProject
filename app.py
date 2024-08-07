@@ -147,7 +147,7 @@ def login():
                 session["profilePicture"] = result["image"]
 
                 flash("You have entered OneBit B)")
-                return redirect("/home")
+                return redirect("/home?sortby=recent")
             else:
                 flash("wrong password for username " + result["userName"])
         else:
@@ -416,7 +416,7 @@ def viewPost():
 
         if (not postID):
             flash("That post doesn't exist")
-            return redirect("/home")
+            return redirect("/home?sortby=recent")
 
         # get the postID of the latest post
         with create_connection() as connection:
@@ -426,7 +426,7 @@ def viewPost():
 
                     if (int(postID) > int(latestPostID)):
                         flash("That post doesn't exist")
-                        return redirect("/home")
+                        return redirect("/homehome?sortby=recent")
                     
                     # this is the default
                     if(not "sortby" in request.args):
@@ -475,7 +475,7 @@ def viewPost():
 
         if not postID:
             flash("postID wasn't given!")
-            return redirect("/home")
+            return redirect("/home?sortby=recent")
 
         with create_connection() as connection:
             with connection.cursor() as cursor:

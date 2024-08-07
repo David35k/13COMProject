@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('epicForm');
     const fields = ['name', 'userName', 'email', 'password'];
 
+    const validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+
     fields.forEach(field => {
         const input = document.getElementById(field);
         if (input) {
@@ -34,6 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             valid = false;
+        } else if (fileInput.files.length > 0) {
+            for (let j = 0; j < validFileExtensions.length; j++) {
+                let sCurExtension = validFileExtensions[j];
+                if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                    blnValid = true;
+                    break;
+                }
+            }
         }
 
         fields.forEach(field => {
