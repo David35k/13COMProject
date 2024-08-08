@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('fileInput').addEventListener('change', function (event) {
+
+    fileInput = document.getElementById('fileInput');
+
+    fileInput.addEventListener('change', function (event) {
         const file = event.target.files[0];
         const preview = document.getElementById('image-preview');
 
@@ -17,14 +20,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('clearButton').addEventListener('click', function () {
         console.log("ohio");
-        console.log(document.getElementById('fileInput').value);
-        document.getElementById('fileInput').value = '';
-        console.log(document.getElementById('fileInput').value);
-
+        console.log(fileInput.value);
+        fileInput.value = '';
+        console.log(fileInput.value);
 
         // Hide the preview image
         const preview = document.getElementById('image-preview');
         preview.src = '';
         preview.style.display = 'none';
+    });
+
+    document.getElementById('anotherClearButton').addEventListener('click', function () {
+        console.log("OHIO");
+        console.log(fileInput.value);
+        document.getElementById("usePlaceholder").value = 1;
+        console.log(fileInput.value);
+        console.log(document.getElementById("usePlaceholder").value);
+
+        // Hide the preview image
+        const preview = document.getElementById('image-preview');
+        preview.src = '/static/images/websiteImages/pfpPlaceholder.jpg';
+        preview.style.display = 'block';
     });
 });

@@ -90,7 +90,10 @@ def signup():
                     sql = """INSERT INTO users (name, userName, email, password, image)
                             VALUES (%s, %s, %s, %s, %s);
                     """
-                    values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "static/images/profilePictures/"))
+                    if(not request.files["image"]):
+                        values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), "/static/images/websiteImages/pfpPlaceholder.jpg")
+                    else:
+                        values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "/static/images/profilePictures/"))
                     cursor.execute(sql, values)
                     connection.commit()
 
@@ -172,7 +175,12 @@ def updateProfile():
                 sql = """UPDATE users SET name= %s, userName = %s, email = %s, image = %s
                         WHERE userID = %s
                 """
-                if(not request.files["image"]):
+                if(request.form["usePlaceholder"] == '1'):
+                    if(session["profilePicture"]):
+                        if(session["profilePicture"] != "static/images/websiteImages/pfpPlaceholder.jpg"):
+                            deleteFile(session["profilePicture"])
+                    imagePath = "static/images/websiteImages/pfpPlaceholder.jpg"
+                elif (not request.files["image"]):
                     imagePath = session["profilePicture"]
                 else:
                     if(session["profilePicture"]):
@@ -295,6 +303,8 @@ def createPost():
                     cursor.execute(sql, values)
 
                 connection.commit()
+
+                return redirect('/post/view?postID={{result["postID"]}}')
 
      return render_template("createPost.html")
 

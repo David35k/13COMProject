@@ -8,7 +8,7 @@
 
 {% block content %}
 <script src="/static/scripts/signup.js"></script>
-<script src="/static/scripts/imagePreview.js"></script>
+<script src="/static/scripts/imagePreview.js" defer></script>
 
 <div id="main-div">
     <div class="border-gradient editprofile-section">
@@ -44,7 +44,11 @@
                     </div>
                 </div>
             </div>
+
+            <input id="usePlaceholder" name="usePlaceholder" type="hidden" value="0">
             <button id="clearButton" type="button" class="gradient-button roboto-medium">Clear Image</button>
+            <button id="anotherClearButton" type="button" class="gradient-button roboto-medium">Use
+                default</button>
             <button class="gradient-button roboto-bold" type="submit" id="submitButton">Update</button>
         </form>
     </div>

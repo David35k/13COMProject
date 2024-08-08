@@ -25,7 +25,7 @@
     <div {% if request.url_rule.endpoint=="home" %}class="background-gradient-inverted" {% endif %} id="epic-navbar">
         <nav>
             {% if session["loggedIn"] %}
-            <a href="/home" class="roboto-bold">HOME</a>
+            <a href="/home?sortby=recent" class="roboto-bold">HOME</a>
             <div class="dropdown">
                 <a class="roboto-bold">OPTIONS</a>
                 <div class="dropdown-content">
@@ -47,7 +47,7 @@
         </nav>
 
         {% if "loggedIn" in session %}
-        <a href="/home" style="color: white; text-decoration: none;">
+        <a href="/home?sortby=recent" style="color: white; text-decoration: none;">
             <h1 class="roboto-black">OneBit</h1>
         </a>
         {% else %}

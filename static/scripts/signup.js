@@ -25,26 +25,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const fileInput = document.getElementById('fileInput');
 
-        if (fileInput.files.length === 0 && form.classList.contains("epic")) {
-            let errorMessageElement = document.getElementById('fileInput-error');
-            if (!errorMessageElement) {
-                errorMessageElement = document.createElement('div');
-                errorMessageElement.id = 'fileInput-error';
-                errorMessageElement.className = 'error-message';
-                fileInput.parentNode.appendChild(errorMessageElement);
-                errorMessageElement.textContent = 'Image is required.';
-            }
+        // if (fileInput.files.length === 0 && form.classList.contains("epic")) {
+        //     let errorMessageElement = document.getElementById('fileInput-error');
+        //     if (!errorMessageElement) {
+        //         errorMessageElement = document.createElement('div');
+        //         errorMessageElement.id = 'fileInput-error';
+        //         errorMessageElement.className = 'error-message';
+        //         fileInput.parentNode.appendChild(errorMessageElement);
+        //         errorMessageElement.textContent = 'Image is required.';
+        //     }
 
-            valid = false;
-        } else if (fileInput.files.length > 0) {
-            for (let j = 0; j < validFileExtensions.length; j++) {
-                let sCurExtension = validFileExtensions[j];
-                if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-                    blnValid = true;
-                    break;
-                }
-            }
-        }
+        //     valid = false;
+        // } else if (fileInput.files.length === 0) {
+
+        // }
+
+        // some random stuff for file extension WIP
+        // for (let j = 0; j < validFileExtensions.length; j++) {
+        //     let sCurExtension = validFileExtensions[j];
+        //     if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+        //         blnValid = true;
+        //         break;
+        //     }
+        // }
 
         fields.forEach(field => {
             const input = document.getElementById(field);
