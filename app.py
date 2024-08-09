@@ -172,20 +172,19 @@ def updateProfile():
     if request.method == "POST":
         with create_connection() as connection:
             with connection.cursor() as cursor:
-                sql = """UPDATE users SET name= %s, userName = %s, email = %s, image = %s
-                        WHERE userID = %s
-                """
+                sql = "UPDATE users SET name= %s, userName = %s, email = %s, image = %s WHERE userID = %s"
                 if(request.form["usePlaceholder"] == '1'):
                     if(session["profilePicture"]):
-                        if(session["profilePicture"] != "static/images/websiteImages/pfpPlaceholder.jpg"):
+                        if(not session["profilePicture"] == "/static/images/websiteImages/pfpPlaceholder.jpg"):
                             deleteFile(session["profilePicture"])
-                    imagePath = "static/images/websiteImages/pfpPlaceholder.jpg"
+                    imagePath = "/static/images/websiteImages/pfpPlaceholder.jpg"
                 elif (not request.files["image"]):
                     imagePath = session["profilePicture"]
                 else:
                     if(session["profilePicture"]):
-                        deleteFile(session["profilePicture"])
-                    imagePath = saveFile(request.files["image"], "static/images/profilePictures/")
+                        if(not session["profilePicture"] == "/static/images/websiteImages/pfpPlaceholder.jpg"):
+                            deleteFile(session["profilePicture"])
+                    imagePath = saveFile(request.files["image"], "/static/images/profilePictures/")
 
                 values = (request.form["name"], request.form["userName"], request.form["email"], imagePath, session["userID"])
 
