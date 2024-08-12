@@ -11,13 +11,24 @@
     <div class="border-gradient profile-thing">
         <img src='{{ session["profilePicture"] }}' class="pfp">
         <h1>{{ session["userName"] }}</h1>
-        <h3>{{ session["firstName"] }} {{ session["userID"] }}</h3>
-        <div class="stats-thing">
-            <p>Posts made: {{ postNum }}</p>
-            <p>Likes received: {{ likeCount }}</p>
-            <p>Comments: {{ commentNum }}</p>
-        </div>
-        <a href="/user/edit">edit profile</a>
+        <h3>{{ session["name"] }}</h3>
+
+        <!-- some fun stuff -->
+        <h3>
+            You are the
+            {% set last_digit = session["userID"] % 10 %}
+            {% set last_two_digits = session["userID"] % 100 %}
+
+            {% if last_two_digits >= 11 and last_two_digits <= 13 %} {{ session["userID"] }}th {% else %} {% if
+                last_digit==1 %} {{ session["userID"] }}st {% elif last_digit==2 %} {{ session["userID"] }}nd {% elif
+                last_digit==3 %} {{ session["userID"] }}rd {% else %} {{ session["userID"] }}th {% endif %} {% endif %}
+                user of OneBit!</h3>
+                <div class="stats-thing">
+                    <p>Posts made: {{ postNum }}</p>
+                    <p>Likes received: {{ likeCount }}</p>
+                    <p>Comments: {{ commentNum }}</p>
+                </div>
+                <a href="/user/edit">edit profile</a>
     </div>
 </div>
 

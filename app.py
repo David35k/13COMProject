@@ -65,6 +65,10 @@ def profile():
 # lets a user create an account and inserts them into the database
 @app.route("/user/signup", methods=["GET", "POST"])
 def signup():
+    if(session["loggedIn"]):
+        flash("You're already logged in! What are you trying to do!?")
+        return redirect("/user")
+
     if request.method == "POST":
         with create_connection() as connection:
             with connection.cursor() as cursor:
@@ -173,6 +177,11 @@ def updateProfile():
         with create_connection() as connection:
             with connection.cursor() as cursor:
                 sql = "UPDATE users SET name= %s, userName = %s, email = %s, image = %s WHERE userID = %s"
+
+                # this part is really weird
+                # some things need the / in front of path, some dont its weird but it works
+                # probably a nightmare to work on in the future
+
                 if(request.form["usePlaceholder"] == '1'):
                     if(session["profilePicture"]):
                         if(not session["profilePicture"] == "/static/images/websiteImages/pfpPlaceholder.jpg"):
@@ -184,7 +193,7 @@ def updateProfile():
                     if(session["profilePicture"]):
                         if(not session["profilePicture"] == "/static/images/websiteImages/pfpPlaceholder.jpg"):
                             deleteFile(session["profilePicture"])
-                    imagePath = saveFile(request.files["image"], "/static/images/profilePictures/")
+                    imagePath = saveFile(request.files["image"], "static/images/profilePictures/")
 
                 values = (request.form["name"], request.form["userName"], request.form["email"], imagePath, session["userID"])
 
@@ -427,12 +436,8 @@ def viewPost():
             flash("That post doesn't exist")
             return redirect("/home?sortby=recent")
 
-        # get the postID of the latest post
         with create_connection() as connection:
                 with connection.cursor() as cursor:
-                    cursor.execute("SELECT postID FROM posts ORDER BY time DESC")
-                    latestPostID = cursor.fetchone()["postID"]
-
                     if (int(postID) > int(latestPostID)):
                         flash("That post doesn't exist")
                         return redirect("/homehome?sortby=recent")

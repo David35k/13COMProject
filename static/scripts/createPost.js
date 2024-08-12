@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!valid) {
             event.preventDefault();
+            alert("The form you tried to submit has some invalid fields. Please change them before submitting.");
         }
     });
 

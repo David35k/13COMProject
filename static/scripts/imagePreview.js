@@ -1,12 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     fileInput = document.getElementById('fileInput');
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
     fileInput.addEventListener('change', function (event) {
         const file = event.target.files[0];
+        const fileType = file['type'];
         const preview = document.getElementById('image-preview');
 
         if (file) {
+            if (!validImageTypes.includes(fileType)) {
+                alert('Please upload a valid image file (JPEG, PNG, or GIF).');
+                this.value = ''; // Clear the input
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function (e) {
                 preview.src = e.target.result;
