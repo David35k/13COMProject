@@ -65,7 +65,7 @@ def profile():
 # lets a user create an account and inserts them into the database
 @app.route("/user/signup", methods=["GET", "POST"])
 def signup():
-    if(session["loggedIn"]):
+    if("loggedIn" in session):
         flash("You're already logged in! What are you trying to do!?")
         return redirect("/user")
 
