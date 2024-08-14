@@ -133,7 +133,10 @@ def check_field():
 # logs an already existing user in
 @app.route("/user/login", methods=["GET", "POST"])
 def login():
-    session["epic"] = "cool"
+    if("loggedIn" in session):
+        flash("You're already logged in! What are you trying to do!?")
+        return redirect("/user")
+
     if request.method == "POST":
         with create_connection() as connection:
             with connection.cursor() as cursor:
@@ -247,12 +250,12 @@ def home():
 
                 # Check if search parameter is provided
                 if "search" in request.form and request.form["search"]:
-                    sql += " WHERE title LIKE '%" + request.form["search"] + "%'"
-                    sql += " OR description LIKE '%" + request.form["search"] + "%'"
+                    sql += " WHERE title LIKE %s"
+                    sql += " OR description LIKE %s"
 
                     # get all related tags
-                    thing = "SELECT * FROM tags WHERE tag LIKE '%" + request.form["search"] + "%'"
-                    cursor.execute(thing)
+                    getTagsSQL = "SELECT * FROM tags WHERE tag LIKE %s"
+                    cursor.execute(getTagsSQL, ("%" + request.form["search"] + "%"))
                     tags = cursor.fetchall()
 
                     if tags:
@@ -269,9 +272,16 @@ def home():
                     flash("That's not a valid sortby argument mate :)")
                     return redirect("/home?sortby=recent")
                         
-                cursor.execute(sql)
+                if "search" in request.form and request.form["search"]:
+                    cursor.execute(sql, (request.form["search"], request.form["search"]))
+                else:
+                    cursor.execute(sql)
 
                 posts = cursor.fetchall()
+
+                if len(posts) == 0:
+                    flash("We couldn't find any posts that match your search :(")
+                    return redirect("/home?sortby=recent")
 
                 cursor.execute("SELECT * FROM tags")
                 tags = cursor.fetchall()
@@ -312,7 +322,7 @@ def createPost():
 
                 connection.commit()
 
-                return redirect('/post/view?postID={{result["postID"]}}')
+                return redirect('/post/view?postID=' + str(result["postID"]))
 
      return render_template("createPost.html")
 
@@ -432,16 +442,30 @@ def viewPost():
     if(request.method == "GET"):
         postID = request.args["postID"]
 
-        if (not postID):
-            flash("That post doesn't exist")
+        if (not postID or not postID.isdigit()):
+            flash("Invalid postID in address bar!")
             return redirect("/home?sortby=recent")
 
         with create_connection() as connection:
                 with connection.cursor() as cursor:
-                    if (int(postID) > int(latestPostID)):
-                        flash("That post doesn't exist")
-                        return redirect("/homehome?sortby=recent")
-                    
+
+                    cursor.execute("SELECT postID FROM posts;")
+                    values = cursor.fetchall()
+                  
+                    print(values)
+
+                    valid = False
+
+                    for value in values:
+                        if int(value["postID"]) == int(postID):
+                            valid = True
+                            break
+
+                    if not valid:
+                        flash("That post doesn't exist!")
+                        return redirect("/home?sortby=recent")
+
+
                     # this is the default
                     if(not "sortby" in request.args):
                         return redirect("/post/view?postID=" + postID + "&sortby=recent")
