@@ -451,8 +451,6 @@ def viewPost():
 
                     cursor.execute("SELECT postID FROM posts;")
                     values = cursor.fetchall()
-                  
-                    print(values)
 
                     valid = False
 
@@ -471,7 +469,7 @@ def viewPost():
                         return redirect("/post/view?postID=" + postID + "&sortby=recent")
                     
                     # Base SQL query
-                    sql = "SELECT * FROM comments JOIN users ON comments.userID = users.userID WHERE postID = " + str(postID)
+                    sql = "SELECT * FROM comments WHERE postID = " + str(postID)
 
                     if request.args["sortby"] == "recent":
                         sql += " ORDER BY time DESC"
@@ -485,6 +483,19 @@ def viewPost():
 
                     cursor.execute(sql)
                     comments = cursor.fetchall()
+                    print(comments)
+
+                    for comment in comments:
+                        sql = "SELECT * FROM users WHERE userID = %s"
+                        cursor.execute(sql, (comment["userID"]))
+                        user = cursor.fetchone()
+                        if(user == None):
+                            comment["userName"] = "[Deleted User]"
+                            comment["image"] = "/static/images/websiteImages/pfpPlaceholder.jpg"
+                        else:
+                            comment["userName"] = user["userName"]
+                            comment["image"] = user["image"]
+
 
                     cursor.execute("SELECT * FROM posts WHERE postID = %s", postID)
                     post = cursor.fetchone()

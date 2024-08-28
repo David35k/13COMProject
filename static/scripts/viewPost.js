@@ -22,13 +22,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const value = input.value.trim();
+        console.log(value.length)
         if (value === '') {
             errorMessageElement.textContent = "Can't submit empty comment";
             return false;
-        } else if (input.value.includes('\n')) {
+        } else if (value.includes('\n')) {
             errorMessageElement.textContent = 'Comment cannot contain newline characters.';
             return false;
-        } else {
+        } else if (value.length > 5000) {
+            errorMessageElement.textContent = 'Comment cannot be longer than 1000 characters! Why do you need to write so much anyway?';
+            return false;
+        }
+        else {
             errorMessageElement.textContent = '';
             return true;
         }
