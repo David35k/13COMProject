@@ -35,6 +35,7 @@
                 {% for post in posts %}
                 <div class="post">
                     <h2 class="roboto-bold">{{ post["title"] }} {{ post["postID"] }}</h2>
+                    <h3>posted by: {{ post["userName"] }} {{post["userIDs"]}}</h3>
                     <a class="post-img-div" href='/post/view?postID={{post["postID"]}}#epic'>
                         <img src='{{ post["image"] }}' class="post-img">
                     </a>

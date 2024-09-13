@@ -246,7 +246,7 @@ def home():
                     return redirect("/home?sortby=recent")
                 
                 # Base SQL query
-                sql = "SELECT * FROM posts"
+                sql = "SELECT * FROM posts JOIN users ON posts.userID=users.userID"
 
                 # Check if search parameter is provided
                 if "search" in request.form and request.form["search"]:
