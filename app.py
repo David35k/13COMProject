@@ -22,19 +22,25 @@ def create_connection():
 def encrypt(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-# this is for saving images
-# adds some randomness to avoid double ups
-def saveFile(file, path, default = None):
+def saveFile(file, path="static/images", default=None):
     if file:
-        randomness = str(uuid.uuid4())[:8] # only 8 characters
-        filePath = path + randomness + "-" + file.filename
+        # Ensure the uploads directory exists
+        if not os.path.exists(path):
+            os.makedirs(path)
+        
+        randomness = str(uuid.uuid4())[:8]  # Add randomness to avoid duplicates
+        filePath = os.path.join('static', 'images', randomness + '-' + file.filename)  # Use relative path here
+        print(filePath)
         file.save(filePath)
-        return "/" + filePath
+        
+        return filePath.replace('\\', '/')  # Ensures path uses forward slashes
     else:
         return default
 
+
+
 def deleteFile(filePath):
-    os.remove(os.path.dirname(os.path.abspath(__file__)) + filePath)
+    os.remove(os.path.dirname(os.path.abspath(__file__)) + '/' +  filePath)
 
 # main landing page when first visiting the website
 @app.route("/")
@@ -80,7 +86,7 @@ def signup():
 
                 for user in users:
                     if user["userName"] == request.form["userName"]:
-                        flash("That username is already taken :( (try adding some numbers and stuff :) )")
+                        flash("That username is already taken :( try adding some numbers and stuff :)")
                         canSubmit = False
                         break
 
@@ -97,7 +103,7 @@ def signup():
                     if(not request.files["image"]):
                         values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), "/static/images/websiteImages/pfpPlaceholder.jpg")
                     else:
-                        values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"], "/static/images/profilePictures/"))
+                        values = (request.form["name"], request.form["userName"], request.form["email"], encrypt(request.form["password"]), saveFile(request.files["image"]))
                     cursor.execute(sql, values)
                     connection.commit()
 
@@ -196,14 +202,14 @@ def updateProfile():
                     if(session["profilePicture"]):
                         if(not session["profilePicture"] == "/static/images/websiteImages/pfpPlaceholder.jpg"):
                             deleteFile(session["profilePicture"])
-                    imagePath = saveFile(request.files["image"], "static/images/profilePictures/")
+                    imagePath = saveFile(request.files["image"])
 
                 values = (request.form["name"], request.form["userName"], request.form["email"], imagePath, session["userID"])
 
                 session["name"] = request.form["name"]
                 session["userName"] = request.form["userName"]
                 session["email"] = request.form["email"]
-                session["profilePicture"] = imagePath
+                session["profilePicture"] = "/" + imagePath
 
                 cursor.execute(sql, values)
                 connection.commit()
@@ -306,7 +312,7 @@ def createPost():
         with create_connection() as connection:
             with connection.cursor() as cursor:
                 sql = "INSERT INTO posts (userID, title, image, description) VALUES (%s, %s, %s, %s)"
-                values = (session["userID"], request.form["title"], saveFile(request.files["image"], "static/images/postImages/"), request.form["description"])
+                values = (session["userID"], request.form["title"], saveFile(request.files["image"]), request.form["description"])
                 cursor.execute(sql, values)
                 connection.commit()
 
@@ -395,7 +401,7 @@ def editPost():
                 else:
                     if(post["image"]):
                         deleteFile(post["image"])
-                    imagePath = saveFile(request.files["image"], "static/images/postImages/")
+                    imagePath = saveFile(request.files["image"])
 
                 sql = "UPDATE posts SET title= %s, image = %s, description = %s WHERE postID = %s"
                 values = (request.form["title"], imagePath, request.form["description"], post["postID"])
@@ -494,7 +500,7 @@ def viewPost():
                             comment["image"] = "/static/images/websiteImages/pfpPlaceholder.jpg"
                         else:
                             comment["userName"] = user["userName"]
-                            comment["image"] = user["image"]
+                            comment["image"] = '/'+ user["image"]
 
 
                     cursor.execute("SELECT * FROM posts WHERE postID = %s", postID)
@@ -515,6 +521,8 @@ def viewPost():
                             if like["userID"] == session["userID"] and comment["commentID"] == like["commentID"]:
                                 # do if the user liked the comment:
                                 likeArr.append(comment["commentID"])
+
+                    print(post["image"])
 
                     return render_template("viewPost.html", post=post, comments=comments, commentCount=counter, likeArr=likeArr, sortby=request.args["sortby"])
 

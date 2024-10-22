@@ -10,11 +10,6 @@
 <script src="/static/scripts/home.js"></script>
 
 <div id="main-div">
-    <div id="left" class="side-div">
-        <p>left</p>
-        <p>blah blah blah bruh bruh bruhblah blah blah bruh bruh bruhblah blah blah bruh bruh bruhblah blah blah bruh
-            bruh bruh</p>
-    </div>
     <div id="center">
         <form id="search-form" method="POST">
             <input type="search" name="search" id="search" placeholder="Search OneBit:">
@@ -35,7 +30,7 @@
                 {% for post in posts %}
                 <div class="post">
                     <h2 class="roboto-bold">{{ post["title"] }} {{ post["postID"] }}</h2>
-                    <h3>posted by: {{ post["userName"] }} {{post["userIDs"]}}</h3>
+                    <h3>posted by: {{ post["userName"] }} {{post["userID"]}}</h3>
                     <a class="post-img-div" href='/post/view?postID={{post["postID"]}}#epic'>
                         <img src='{{ post["image"] }}' class="post-img">
                     </a>
@@ -54,7 +49,7 @@
                         <a href='/post/view?postID={{post["postID"]}}#comment'><img
                                 src="/static/images/websiteImages/commentThing.png" width="40px"></a>
                         <div class="tooltip">
-                            <a onclick='copyFunc( {{post["postID"]}} )' onmouseout="outFunc()">
+                            <a onclick='copyFunc({{post["postID"]}})' onmouseout="outFunc()">
                                 <span class="tooltiptext" id='myTooltip{{post["postID"]}}'>Copy post link</span>
                                 <img src="/static/images/websiteImages/shareThing.png" width="40px">
                             </a>
@@ -73,11 +68,6 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
-
-    <div id="right" class="side-div">
-        <p>Latest Posts</p>
-        <p>blah blah blah bruh bruh bruhblah blah blah bruh bruh bruh</p>
     </div>
 </div>
 {% endblock content%}
